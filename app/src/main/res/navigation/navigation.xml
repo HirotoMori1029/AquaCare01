@@ -8,16 +8,16 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.websarva.wings.android.aquacare01.fragments.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/recode"
         android:name="com.websarva.wings.android.aquacare01.fragments.Recode"
-        android:label="fragment_recode"
+        android:label="Recode"
         tools:layout="@layout/fragment_recode" />
     <fragment
         android:id="@+id/notificationFragment"
         android:name="com.websarva.wings.android.aquacare01.fragments.NotificationFragment"
-        android:label="fragment_notification"
+        android:label="Notification"
         tools:layout="@layout/fragment_notification" />
 </navigation>
