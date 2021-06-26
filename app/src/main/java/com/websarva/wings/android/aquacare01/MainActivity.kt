@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //ツールバーをセット
-        setSupportActionBar(findViewById(R.id.my_toolbar))
+//        ツールバーをセットする場合
+//        setSupportActionBar(findViewById(R.id.my_toolbar))
 
         //ナビゲーションコントローラーを取得
         val navController = findNavController(R.id.fragmentContainerView)

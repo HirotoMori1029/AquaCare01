@@ -3,4 +3,5 @@
     <string name="home">Home</string>
     <string name="recode">Recode</string>
     <string name="notification">Notification</string>
+    <string name="settings">Settings</string>
 </resources>
