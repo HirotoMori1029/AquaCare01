@@ -15,15 +15,17 @@
         android:name="com.websarva.wings.android.aquacare01.fragments.Recode"
         android:label="Recode"
         tools:layout="@layout/fragment_recode" />
-    <fragment
-        android:id="@+id/notificationFragment"
-        android:name="com.websarva.wings.android.aquacare01.fragments.NotificationFragment"
-        android:label="Notification"
-        tools:layout="@layout/fragment_notification" />
+
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.websarva.wings.android.aquacare01.fragments.SettingFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_setting" />
+
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.websarva.wings.android.aquacare01.fragments.NotificationFragment"
+        android:label="Notification"
+        tools:layout="@layout/fragment_notification" />
 
 </navigation>
