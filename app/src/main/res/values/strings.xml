@@ -7,18 +7,14 @@
 <!--    HomeFragment-->
     <string name="your_aquarium">Your Aquarium</string>
     <string name="display_image">Display Name</string>
-    <string name="latest_activity">LatestActivity</string>
-    <string-array name="lv_latest_activity">
-        <item>TEST01</item>
-        <item>TEST02</item>
-        <item>TEST03</item>
-    </string-array>
-    <string-array name="gallery_select_list">
+    <string name="home_alert_button">ADD ALERT</string>
+    <string name="home_recode_button">Add RECODE</string>
+    <string-array name="image_selected_option_list">
         <item>Take Photo</item>
         <item>Choose Photo</item>
     </string-array>
-    <string name="dialog_title">ImageClicked!!</string>
+    <string name="image_clicked_option_title">ImageClicked!!</string>
     <string name="dialog_msg">Choose an option</string>
-    <string name="press_me">ここおして</string>
+    <string name="dialog_cancel">Cancel</string>
     <string name="dialog_clicked">クリックされました</string>
 </resources>

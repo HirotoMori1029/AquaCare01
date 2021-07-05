@@ -39,14 +39,14 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView.setupWithNavController(navController)
 
         val aqImage = findViewById<ImageView>(R.id.aqImage)
-        val listener = ImageLister()
-        aqImage.setOnClickListener(listener)
+        val imageSelectedLister = ImageSelectedLister()
+        aqImage.setOnClickListener(imageSelectedLister)
     }
 
-    private inner class ImageLister : View.OnClickListener {
+    private inner class ImageSelectedLister : View.OnClickListener {
         override fun onClick(view: View) {
-            val dialog = ImageSelectedDialogFragment()
-            dialog.show(supportFragmentManager, "ImageSelectedDialogFragment")
+            val dialogFragment = ImageSelectedDialogFragment()
+            dialogFragment.show(supportFragmentManager, "ImageSelectedDialogFragment")
         }
 
 

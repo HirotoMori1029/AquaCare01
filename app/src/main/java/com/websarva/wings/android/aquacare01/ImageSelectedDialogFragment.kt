@@ -15,9 +15,14 @@ class ImageSelectedDialogFragment : DialogFragment() {
 //        アクティビティがnullでないならばダイアログオブジェクトを生成
         val dialog = activity?.let {
             val builder = AlertDialog.Builder(it)
-            builder.setTitle(R.string.dialog_title)
-            builder.setMessage(R.string.dialog_msg)
-            builder.setNegativeButton(R.string.press_me, DialogButtonClickLister())
+            builder.setTitle(R.string.image_clicked_option_title)
+
+            //toDo 編集の余地あり
+//            builder.setItems(R.array.image_selected_option_list/*, DialogButtonClickLister()*/) {
+//                dialog, which ->
+//                Toast.makeText(context, "${which}が入っている", Toast.LENGTH_SHORT).show()
+//            }
+            builder.setNegativeButton(R.string.dialog_cancel, DialogButtonClickLister())
             builder.create()
         }
         return dialog ?: throw IllegalStateException("activity is null!")
