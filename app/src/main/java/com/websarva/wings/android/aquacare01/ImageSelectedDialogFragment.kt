@@ -16,25 +16,26 @@ class ImageSelectedDialogFragment : DialogFragment() {
         val dialog = activity?.let {
             val builder = AlertDialog.Builder(it)
             builder.setTitle(R.string.image_clicked_option_title)
-
-            //toDo 編集の余地あり
-//            builder.setItems(R.array.image_selected_option_list/*, DialogButtonClickLister()*/) {
-//                dialog, which ->
-//                Toast.makeText(context, "${which}が入っている", Toast.LENGTH_SHORT).show()
-//            }
-            builder.setNegativeButton(R.string.dialog_cancel, DialogButtonClickLister())
+            builder.setItems(R.array.image_selected_option_list, DialogButtonClickListener())
+            builder.setNegativeButton(R.string.dialog_cancel, DialogButtonClickListener())
             builder.create()
         }
         return dialog ?: throw IllegalStateException("activity is null!")
     }
 
-    private inner class DialogButtonClickLister : DialogInterface.OnClickListener {
+    private inner class DialogButtonClickListener : DialogInterface.OnClickListener {
         override fun onClick(dialog: DialogInterface?, which: Int) {
             var msg = ""
 //            タップされたアクションで分岐
             when(which) {
                 DialogInterface.BUTTON_NEGATIVE ->
-                    msg = getString(R.string.dialog_clicked)
+                    msg = "negativeボタンが選択されました"
+                0 ->
+                    msg = "0が選択されました"
+//                <カメラを起動する処理はここでいいですか？>
+
+                1 ->
+                    msg = "1が選択されました"
             }
 
             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()

@@ -8,7 +8,7 @@
     <string name="your_aquarium">Your Aquarium</string>
     <string name="display_image">Display Name</string>
     <string name="home_alert_button">ADD ALERT</string>
-    <string name="home_recode_button">Add RECODE</string>
+    <string name="home_recode_button">ADD RECODE</string>
     <string-array name="image_selected_option_list">
         <item>Take Photo</item>
         <item>Choose Photo</item>
@@ -16,5 +16,4 @@
     <string name="image_clicked_option_title">ImageClicked!!</string>
     <string name="dialog_msg">Choose an option</string>
     <string name="dialog_cancel">Cancel</string>
-    <string name="dialog_clicked">クリックされました</string>
 </resources>
