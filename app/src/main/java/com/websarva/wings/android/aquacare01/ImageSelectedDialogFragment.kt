@@ -29,13 +29,13 @@ class ImageSelectedDialogFragment : DialogFragment() {
 //            タップされたアクションで分岐
             when(which) {
                 DialogInterface.BUTTON_NEGATIVE ->
-                    msg = "negativeボタンが選択されました"
+                    msg = "Canceled!"
                 0 ->
-                    msg = "0が選択されました"
-//                <カメラを起動する処理はここでいいですか？>
+                    msg = "0 is selected"
+//                <<カメラを起動する処理はここでいいですか？>>
 
                 1 ->
-                    msg = "1が選択されました"
+                    msg = "1 is selected"
             }
 
             Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
