@@ -16,4 +16,7 @@
     <string name="image_clicked_option_title">ImageClicked!!</string>
     <string name="dialog_msg">Choose an option</string>
     <string name="dialog_cancel">Cancel</string>
+
+<!--    notificationFragment-->
+    <string name="notification_channel_name">aquarium task</string>
 </resources>
