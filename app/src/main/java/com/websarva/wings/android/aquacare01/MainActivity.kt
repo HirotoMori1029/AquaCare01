@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
@@ -20,6 +21,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.text.SimpleDateFormat
 import java.util.*
+
+//    EXTRAMESSAGE_test
+const val EXTRA_MESSAGE ="testTestTest"
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,9 +45,9 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
         bottomNavigationView.setupWithNavController(navController)
 
+        }
 
-    }
-
+    //ホームの画像をタップされたときの処理
     private val startForTookPhotoResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
         if(result.resultCode == RESULT_OK) {
             val aqImage = findViewById<ImageView>(R.id.aqImage)
@@ -52,7 +56,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-//ホームの画像をタップされたときの処理
     fun onHomeImageClick(view: View) {
 //        ファイル名を一意に作成する
 //    Todo:Locale位置を考える
@@ -70,29 +73,16 @@ class MainActivity : AppCompatActivity() {
 //        intentオブジェクトを生成
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.putExtra(MediaStore.EXTRA_OUTPUT, _imageUri)
-
         startForTookPhotoResult.launch(intent)
     }
 
-//    AddAlertButtonが押されたときの処理
-    fun onAlertBtnClick(view: View) {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-//        10sec足す
-        calendar.add(Calendar.SECOND, 10)
-//        intentを生成
-        val intent = Intent(applicationContext, AlarmNotification::class.java)
-        intent.putExtra("RequestCode", requestCode)
-        pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent,0)
-
-//        アラームをセット
-        alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-        if(alarmManager != null) {
-            alarmManager?.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pending)
-            //            トーストで設定されたことを表示する
-            Toast.makeText(applicationContext, "alarm start", Toast.LENGTH_SHORT).show()
+//    Alarmボタンが押されたときの処理
+    fun onAlarmBtnClick (view: View){
+        val message = R.string.add_task_title
+        val intent = Intent(this, AddTaskActivity::class.java).apply {
+            putExtra(EXTRA_MESSAGE, message)
         }
-
+        startActivity(intent)
     }
 
 }

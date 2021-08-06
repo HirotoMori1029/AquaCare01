@@ -4,10 +4,11 @@
     <string name="recode">Recode</string>
     <string name="notification">Notification</string>
     <string name="settings">Settings</string>
-<!--    HomeFragment-->
+
+    <!-- HomeFragment-->
     <string name="your_aquarium">Your Aquarium</string>
     <string name="display_image">Display Name</string>
-    <string name="home_alert_button">ADD ALERT</string>
+    <string name="home_task_button">ADD TASK</string>
     <string name="home_recode_button">ADD RECODE</string>
     <string-array name="image_selected_option_list">
         <item>Take Photo</item>
@@ -17,6 +18,15 @@
     <string name="dialog_msg">Choose an option</string>
     <string name="dialog_cancel">Cancel</string>
 
-<!--    notificationFragment-->
+    <!-- NotificationFragment-->
     <string name="notification_channel_name">aquarium task</string>
+
+    <!-- AddTaskFragment -->
+    <string name="add_task_title">AddTask</string>
+    <string name="input_name">Name</string>
+    <string name="input_date">Date</string>
+    <string name="input_time">Time</string>
+    <string name="save">SAVE</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

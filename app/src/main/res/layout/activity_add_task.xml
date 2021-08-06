@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddTaskActivity">
+
+    <TextView
+        android:id="@+id/addTaskTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffccff"
+        android:padding="10dp"
+        android:text="@string/add_task_title"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/addTaskNameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/input_name"
+        android:textSize="24sp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/addTaskDateText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addTaskTitle" />
+
+    <TextView
+        android:id="@+id/addTaskDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/input_date"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/addTaskTimeText"
+        app:layout_constraintLeft_toLeftOf="@+id/addTaskNameText"
+        app:layout_constraintTop_toBottomOf="@+id/addTaskNameText" />
+
+    <TextView
+        android:id="@+id/addTaskTimeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/input_time"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/addTaskSaveBtn"
+        app:layout_constraintLeft_toLeftOf="@+id/addTaskNameText"
+        app:layout_constraintTop_toBottomOf="@+id/addTaskDateText" />
+
+
+    <EditText
+        android:id="@+id/addTaskNameEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/addTaskNameText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/addTaskNameText" />
+
+    <TextView
+        android:id="@+id/addTaskDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2021/08/03"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/addTaskDateText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/addTaskDateText" />
+
+    <TextView
+        android:id="@+id/addTaskTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="13:02"
+        android:textSize="24sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/addTaskTimeText"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/addTaskTimeText" />
+
+    <Button
+        android:id="@+id/addTaskSaveBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:textSize="20sp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
