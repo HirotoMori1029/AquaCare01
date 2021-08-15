@@ -20,10 +20,11 @@
 
     <!-- NotificationFragment-->
     <string name="notification_channel_name">aquarium task</string>
+    <string name="alarm_start">Alarm has been set</string>
 
     <!-- AddTaskFragment -->
     <string name="add_task_title">AddTask</string>
-    <string name="input_name">Name</string>
+    <string name="input_name">Task Name</string>
     <string name="input_date">Date</string>
     <string name="input_time">Time</string>
     <string name="save">SAVE</string>

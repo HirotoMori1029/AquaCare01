@@ -42,19 +42,20 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
 
     private fun getTimeString(hourOfDay: Int, minute: Int): String {
         val calendar = Calendar.getInstance()
-        calendar.set(0, 0, 0, hourOfDay, minute)
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+        calendar.set(Calendar.MINUTE, minute)
         return SimpleDateFormat("HH : mm").format(calendar.time)
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
 
         val time = getTimeString(hourOfDay, minute)
-        listener?.onTimeSelected(time)
+        listener?.onTimeSelected(time, hourOfDay, minute)
         parentFragmentManager.beginTransaction().remove(this).commit()
     }
 
     interface OnTimeSetListener {
-        fun onTimeSelected(time: String)
+        fun onTimeSelected(time: String, hourOfDay: Int, minute: Int)
     }
 
 }

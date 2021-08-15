@@ -30,11 +30,6 @@ class MainActivity : AppCompatActivity() {
 //    保存された画像のURI
     private var _imageUri: Uri? = null
 
-//    Notificationに使用する定数を定義
-    private var alarmManager: AlarmManager? = null
-    private var pending: PendingIntent? = null
-    private val requestCode = 1
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -78,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
 //    Alarmボタンが押されたときの処理
     fun onAlarmBtnClick (view: View){
-        val message = R.string.add_task_title
+        val message = "Add Task"
         val intent = Intent(this, AddTaskActivity::class.java).apply {
             putExtra(EXTRA_MESSAGE, message)
         }

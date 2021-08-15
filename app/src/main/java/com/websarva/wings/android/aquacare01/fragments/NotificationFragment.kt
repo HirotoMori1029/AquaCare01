@@ -1,10 +1,16 @@
 package com.websarva.wings.android.aquacare01.fragments
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.websarva.wings.android.aquacare01.Alarm
+import com.websarva.wings.android.aquacare01.AlarmViewAdapter
 import com.websarva.wings.android.aquacare01.R
 
 class NotificationFragment : Fragment() {
@@ -13,13 +19,38 @@ class NotificationFragment : Fragment() {
         super.onCreate(savedInstanceState)
         }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val view = inflater.inflate(R.layout.fragment_notification, container, false)
+
+        val lvAlarm = view.findViewById<RecyclerView>(R.id.lvAlarm)
+        val linearLayoutManager = LinearLayoutManager(view.context)
+
+//        ▼テストデータの生成
+        val alarmList = mutableListOf<Alarm>()
+//        sharedPreferencesから情報を取得
+        val sharedPreferences = requireActivity().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
+        for (i in 1..10) {
+            val taskName = sharedPreferences.getString("taskNameKey$i", "NoData")
+            val taskDate = sharedPreferences.getString("taskDateKey$i", "NoData")
+            val taskTime = sharedPreferences.getString("taskTimeKey$i", "NoData")
+
+//        nullでないならlistに情報を追加
+            if ((taskName != null) && (taskDate != null) && (taskTime != null)) {
+                alarmList.add(Alarm(taskName, taskDate, taskTime))
+            }
+        }
+
+        //RecyclerViewにAdapterとLayoutManagerを設定
+        lvAlarm.adapter = AlarmViewAdapter(alarmList)
+        lvAlarm.layoutManager = linearLayoutManager
+
+        lvAlarm.addItemDecoration(DividerItemDecoration(view.context, linearLayoutManager.orientation))
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notification, container, false)
+        return view
     }
 
 }

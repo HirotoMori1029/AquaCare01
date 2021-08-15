@@ -29,7 +29,7 @@ class AlarmNotification : BroadcastReceiver() {
 
         val builder = NotificationCompat.Builder(context, channelId)
         builder.setSmallIcon(android.R.drawable.ic_dialog_info)
-        builder.setContentTitle("TestTitle")
+        builder.setContentTitle(title)
         builder.setContentText(message)
         builder.setAutoCancel(true)
         builder.setContentIntent(pendingIntent)

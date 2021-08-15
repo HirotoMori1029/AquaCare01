@@ -47,12 +47,12 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
 
     override fun onDateSet(datePicker: DatePicker?, year: Int, month: Int, day: Int) {
         val date = getDateString(year, month, day)
-        listener?.onDateSelected(date)
+        listener?.onDateSelected(date, year, month, day)
         parentFragmentManager.beginTransaction().remove(this).commit()
     }
 
     interface OnDateSetListener {
-        fun onDateSelected(date: String)
+        fun onDateSelected(date: String, year: Int, month: Int, day: Int)
     }
 
 }

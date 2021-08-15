@@ -10,10 +10,12 @@
         android:id="@+id/addTaskTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffccff"
+        android:background="@color/design_default_color_primary"
+        android:textColor="@color/white"
         android:padding="10dp"
         android:text="@string/add_task_title"
         android:textSize="30sp"
+        android:gravity="center_horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,10 +24,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/input_name"
-        android:textSize="24sp"
+        android:textSize="16sp"
         android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/addTaskDateText"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/addTaskNameEdit"
         app:layout_constraintTop_toBottomOf="@+id/addTaskTitle" />
 
     <TextView
@@ -33,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/input_date"
-        android:textSize="24sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/addTaskTimeText"
         app:layout_constraintLeft_toLeftOf="@+id/addTaskNameText"
         app:layout_constraintTop_toBottomOf="@+id/addTaskNameText" />
@@ -43,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/input_time"
-        android:textSize="24sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/addTaskSaveBtn"
         app:layout_constraintLeft_toLeftOf="@+id/addTaskNameText"
         app:layout_constraintTop_toBottomOf="@+id/addTaskDateText" />
@@ -55,7 +58,9 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:textSize="24sp"
+        android:textSize="16sp"
+        android:layout_marginLeft="20dp"
+        android:hint="change water"
         app:layout_constraintBaseline_toBaselineOf="@+id/addTaskNameText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/addTaskNameText" />
@@ -64,8 +69,8 @@
         android:id="@+id/addTaskDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2021/08/03"
-        android:textSize="24sp"
+        android:text="yyyy / MM / dd EEE"
+        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/addTaskDateText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/addTaskDateText" />
@@ -74,8 +79,8 @@
         android:id="@+id/addTaskTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="13:02"
-        android:textSize="24sp"
+        android:text="HH : mm"
+        android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@+id/addTaskTimeText"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/addTaskTimeText" />
