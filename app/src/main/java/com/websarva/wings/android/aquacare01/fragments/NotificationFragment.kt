@@ -15,6 +15,9 @@ import com.websarva.wings.android.aquacare01.R
 
 class NotificationFragment : Fragment() {
 
+    private var nfMaxNum = 10
+    private var listCountNum = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         }
@@ -24,16 +27,30 @@ class NotificationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val view = inflater.inflate(R.layout.fragment_notification, container, false)
+        //        sharedPreferencesから情報を取得
+        val sharedPreferences = requireActivity().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
+        //        生成するリストデータの個数を数える関数
+        fun countListNum () {
+            for (j in 1..nfMaxNum) {
+                val str = sharedPreferences.getString("taskNameKey$listCountNum","NoData")
+                if (str != "NoData") {
+                    listCountNum++
+                } else {
+                    break
+                }
+            }
+            if (listCountNum != 1)
+            listCountNum--
+        }
 
+        val view = inflater.inflate(R.layout.fragment_notification, container, false)
         val lvAlarm = view.findViewById<RecyclerView>(R.id.lvAlarm)
         val linearLayoutManager = LinearLayoutManager(view.context)
 
 //        ▼テストデータの生成
         val alarmList = mutableListOf<Alarm>()
-//        sharedPreferencesから情報を取得
-        val sharedPreferences = requireActivity().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
-        for (i in 1..10) {
+        countListNum()
+        for (i in 1..listCountNum) {
             val taskName = sharedPreferences.getString("taskNameKey$i", "NoData")
             val taskDate = sharedPreferences.getString("taskDateKey$i", "NoData")
             val taskTime = sharedPreferences.getString("taskTimeKey$i", "NoData")
@@ -47,9 +64,8 @@ class NotificationFragment : Fragment() {
         //RecyclerViewにAdapterとLayoutManagerを設定
         lvAlarm.adapter = AlarmViewAdapter(alarmList)
         lvAlarm.layoutManager = linearLayoutManager
-
         lvAlarm.addItemDecoration(DividerItemDecoration(view.context, linearLayoutManager.orientation))
-        // Inflate the layout for this fragment
+
         return view
     }
 

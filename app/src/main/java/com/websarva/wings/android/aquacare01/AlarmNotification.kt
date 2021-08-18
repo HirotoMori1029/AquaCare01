@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import java.text.SimpleDateFormat
+import java.util.*
 
 class AlarmNotification : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
@@ -16,7 +17,7 @@ class AlarmNotification : BroadcastReceiver() {
         val channelId = "default"
         val title= context.getString(R.string.app_name)
         val currentTime: Long = System.currentTimeMillis()
-        val dataFormat = SimpleDateFormat("yyyyMMddHHmmss")
+        val dataFormat = SimpleDateFormat("yyyy/MM/dd/HH:mm:ss", Locale.getDefault())
         val cTime = dataFormat.format(currentTime)
         val message ="This is notification at {$cTime}"
 
