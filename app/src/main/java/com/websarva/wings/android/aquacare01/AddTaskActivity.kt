@@ -63,7 +63,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
             val tskName = addTaskNameEdit.text.toString()
             val tskDate = addTaskDate.text.toString()
             val tskTime = addTaskTime.text.toString()
-            val rpLong = addTaskRepeatInt.text.toString().toLongOrNull() ?: 0
+            val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 1
 //        チェック状態を取得
             val rpCBisChecked = rpCheckBox.isChecked
             //        sharedPreferencesを準備
@@ -100,7 +100,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //            rpCheckBoxが入っていればリピートで設定
             if (rpCBisChecked) {
                 if (alarmManager != null) {
-                    alarmManager?.setInexactRepeating(alarmType, triggerTime, millisToDay(rpLong), pending)
+                    alarmManager?.setInexactRepeating(alarmType, triggerTime, AlarmManager.INTERVAL_DAY * rpInt, pending)
 //                トーストで設定されたことを表示する
                     alarmStartToast ()
                 }
@@ -135,10 +135,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 
     private fun alarmStartToast () {
         Toast.makeText(applicationContext, R.string.alarm_start, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun millisToDay (millis: Long) :Long {
-        return millis * 1000 * 60 * 60 * 24
     }
 
 }

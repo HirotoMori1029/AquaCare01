@@ -2,6 +2,7 @@ package com.websarva.wings.android.aquacare01.fragments
 
 
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -68,7 +69,7 @@ class HomeFragment : Fragment() {
 
         }
 
-        //        AddAlarmが押されたときの処理
+//        AddAlarmが押されたときの処理
         val addAlarmBtn = view.findViewById<Button>(R.id.addAlarmBtn)
         addAlarmBtn.setOnClickListener {
             //    Alarmボタンが押されたときの処理
@@ -77,6 +78,13 @@ class HomeFragment : Fragment() {
                 putExtra(EXTRA_MESSAGE, message)
             }
             startActivity(intent)
+        }
+
+//        addRecodeBtnが押されたときの処理
+        val addRecodeBtn = view.findViewById<Button>(R.id.addRecodeBtn)
+        addRecodeBtn.setOnClickListener {
+            val sp = requireActivity().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
+            sp.edit().clear().apply()
         }
 
     }

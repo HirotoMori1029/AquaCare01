@@ -8,15 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>) :
+class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>, private val listener: OnItemClickListener) :
     RecyclerView.Adapter<AlarmViewAdapter.AlarmListRecyclerViewHolder>() {
-
-    class AlarmListRecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val alarmIconImageView: ImageView = itemView.findViewById(R.id.alarmIcon)
-        val taskNameTextView: TextView = itemView.findViewById(R.id.taskName)
-        val timeTextView: TextView = itemView.findViewById(R.id.taskTime)
-        val dateTextView: TextView = itemView.findViewById(R.id.taskDate)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmListRecyclerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -34,4 +27,26 @@ class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>) :
     }
 
     override fun getItemCount(): Int = alarmListData.size
+
+    inner class AlarmListRecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+        val alarmIconImageView: ImageView = itemView.findViewById(R.id.alarmIcon)
+        val taskNameTextView: TextView = itemView.findViewById(R.id.taskName)
+        val timeTextView: TextView = itemView.findViewById(R.id.taskTime)
+        val dateTextView: TextView = itemView.findViewById(R.id.taskDate)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if(position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
+            }
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
 }
