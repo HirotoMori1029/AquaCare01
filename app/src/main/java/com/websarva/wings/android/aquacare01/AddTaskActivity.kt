@@ -80,6 +80,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //        intentを生成
             val intent = Intent(applicationContext, AlarmNotification::class.java)
             intent.putExtra("RequestCode", requestCode)
+            intent.putExtra("TaskName", tskName)
             pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, 0)
 
 //            sharedPrefに保存する関数を用意

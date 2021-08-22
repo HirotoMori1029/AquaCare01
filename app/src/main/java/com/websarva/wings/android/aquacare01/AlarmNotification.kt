@@ -7,19 +7,16 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import java.text.SimpleDateFormat
-import java.util.*
+
 
 class AlarmNotification : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val requestCode :Int = intent.getIntExtra("RequestCode", 0)
-        val pendingIntent :PendingIntent = PendingIntent.getActivity(context, requestCode,intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val taskName :String? = intent.getStringExtra("TaskName")
+        val pendingIntent :PendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         val channelId = "default"
         val title= context.getString(R.string.app_name)
-        val currentTime: Long = System.currentTimeMillis()
-        val dataFormat = SimpleDateFormat("yyyy/MM/dd/HH:mm:ss", Locale.getDefault())
-        val cTime = dataFormat.format(currentTime)
-        val message ="This is notification at {$cTime}"
+        val aMessage ="$taskName"
 
 //        NotificationChannelを設定
         val channel = NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_DEFAULT)
@@ -31,7 +28,7 @@ class AlarmNotification : BroadcastReceiver() {
         val builder = NotificationCompat.Builder(context, channelId)
         builder.setSmallIcon(android.R.drawable.ic_dialog_info)
         builder.setContentTitle(title)
-        builder.setContentText(message)
+        builder.setContentText(aMessage)
         builder.setAutoCancel(true)
         builder.setContentIntent(pendingIntent)
         builder.setWhen(System.currentTimeMillis())
