@@ -20,19 +20,7 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-//        Todo:後で編集する
-        val view = inflater.inflate(R.layout.fragment_setting, container, false)
-        val intent = activity?.intent
-        val extras = intent?.extras
-
-//        設定タイトルと設定文を表示
-        val settingsTitleT = extras?.getString("settingsTitle")
-        val settingsDescT = extras?.getString("settingsDesc")
-
-        val tvSettingsTitle = view.findViewById<TextView>(R.id.settings_row)
-        val tvSettingsDescT = view.findViewById<TextView>(R.id.settings_description)
-
-        return view
+        return inflater.inflate(R.layout.fragment_setting, container, false)
     }
 
 }

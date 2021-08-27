@@ -42,7 +42,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
     private fun getDateString(year: Int, month: Int, day: Int): String {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, day)
-        return SimpleDateFormat("yyyy / MM / dd ").format(calendar.time)
+        return SimpleDateFormat("MM / dd ").format(calendar.time)
     }
 
     override fun onDateSet(datePicker: DatePicker?, year: Int, month: Int, day: Int) {

@@ -7,13 +7,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import com.websarva.wings.android.aquacare01.fragments.NotificationFragment
 
 
 class AlarmNotification : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val requestCode :Int = intent.getIntExtra("RequestCode", 0)
         val taskName :String? = intent.getStringExtra("TaskName")
-        val pendingIntent :PendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val nIntent = Intent(context, MainActivity::class.java)
+        val pendingIntent :PendingIntent = PendingIntent.getActivity(context, requestCode + NotificationFragment().nfMaxNum, nIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val channelId = "default"
         val title= context.getString(R.string.app_name)
         val aMessage ="$taskName"
@@ -29,9 +31,9 @@ class AlarmNotification : BroadcastReceiver() {
         builder.setSmallIcon(android.R.drawable.ic_dialog_info)
         builder.setContentTitle(title)
         builder.setContentText(aMessage)
-        builder.setAutoCancel(true)
         builder.setContentIntent(pendingIntent)
         builder.setWhen(System.currentTimeMillis())
+        builder.setAutoCancel(true)
 //        通知
         notificationManager.notify(R.string.app_name, builder.build())
 

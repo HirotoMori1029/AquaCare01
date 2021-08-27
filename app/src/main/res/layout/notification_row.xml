@@ -10,68 +10,149 @@
 
     <ImageView
         android:id="@+id/alarmIcon"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="@id/taskRepeat"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/taskName"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/taskName"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="default"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="24sp"
+        android:textColor="#0000ff"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/taskTimeStr"
+        android:id="@+id/taskNextStr"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="3dp"
         android:textSize="16sp"
-        android:text="Time:"
+        android:text="Next"
+        android:textColor="@color/black"
+        android:includeFontPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskName"/>
 
     <TextView
-        android:id="@+id/taskTime"
+        android:id="@+id/taskTimeNextStr"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="3dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
+        android:text="Time:"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/taskNextStr"
+        app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
+
+    <TextView
+        android:id="@+id/taskTimeNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
         android:text="XX:XX"
-        app:layout_constraintStart_toEndOf="@+id/taskTimeStr"
-        app:layout_constraintTop_toBottomOf="@+id/taskName"/>
+        android:textColor="@color/black"
+        app:layout_constraintStart_toEndOf="@+id/taskTimeNextStr"
+        app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
 
     <TextView
-        android:id="@+id/taskDateStr"
+        android:id="@+id/taskDateNextStr"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="3dp"
         android:text="Date:"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/taskTime"
-        app:layout_constraintTop_toBottomOf="@+id/taskName"/>
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/taskTimeNext"
+        app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
 
     <TextView
-        android:id="@+id/taskDate"
+        android:id="@+id/taskDateNext"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="MM/dd"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/taskDateNextStr"
+        app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
+
+    <TextView
+        android:id="@+id/taskPrevStr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="16sp"
+        android:text="Prev"
+        android:includeFontPadding="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskNextStr"/>
+
+    <TextView
+        android:id="@+id/taskTimePrevStr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        android:text="Time:"
+        app:layout_constraintStart_toEndOf="@+id/taskNextStr"
+        app:layout_constraintBottom_toBottomOf="@+id/taskPrevStr"/>
+
+    <TextView
+        android:id="@+id/taskTimePrev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="14sp"
+        android:text="XX:XX"
+        app:layout_constraintStart_toEndOf="@+id/taskTimePrevStr"
+        app:layout_constraintBottom_toBottomOf="@+id/taskPrevStr"/>
+
+    <TextView
+        android:id="@+id/taskDatePrevStr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Date:"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/taskTimePrev"
+        app:layout_constraintBottom_toBottomOf="@+id/taskPrevStr"/>
+
+    <TextView
+        android:id="@+id/taskDatePrev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="MM/dd"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@+id/taskDatePrevStr"
+        app:layout_constraintBottom_toBottomOf="@+id/taskPrevStr"/>
+
+    <TextView
+        android:id="@+id/taskRepeat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="3dp"
-        android:text="20XX/XX/XX"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@+id/taskDateStr"
-        app:layout_constraintTop_toBottomOf="@+id/taskName"/>
+        android:text="No data of repeat"
+        android:textSize="10sp"
+        android:includeFontPadding="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDatePrev"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

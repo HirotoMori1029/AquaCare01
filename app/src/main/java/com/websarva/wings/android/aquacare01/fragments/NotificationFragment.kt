@@ -19,11 +19,22 @@ import com.websarva.wings.android.aquacare01.AlarmNotification
 import com.websarva.wings.android.aquacare01.AlarmViewAdapter
 import com.websarva.wings.android.aquacare01.R
 
-class NotificationFragment : Fragment(), AlarmViewAdapter.OnItemClickListener {
+class NotificationFragment : Fragment() {
 //    表示最大数
-    private var nfMaxNum = 10
+    var nfMaxNum = 5
 //    sharePreferencesにあるalarmデータの数
-    private var listCountNum = 1
+    private var listCountNum = 0
+//    保存するkeyの配列
+    val alarmStrKeys = arrayOf(
+        "taskName",
+        "taskDateNext",
+        "taskTimeNext",
+        "taskDatePrev",
+        "taskTimePrev",
+        "taskRepeat"
+    )
+    private val alarmStrKeysSize = alarmStrKeys.size
+    val alarmBooleanKey = "taskState"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,53 +52,62 @@ class NotificationFragment : Fragment(), AlarmViewAdapter.OnItemClickListener {
         createAlarmList(listCountNum, alarmList, sharedPreferences)
 
         //RecyclerViewにAdapterとLayoutManagerを設定
-        lvAlarm.adapter = AlarmViewAdapter(alarmList, this)
+        lvAlarm.adapter = AlarmViewAdapter(alarmList)
         lvAlarm.layoutManager = linearLayoutManager
         lvAlarm.addItemDecoration(DividerItemDecoration(view.context, linearLayoutManager.orientation))
 
         return view
     }
 
-    override fun onItemClick(position: Int) {
-        val alarmMgr = context?.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val intent = Intent(context, AlarmNotification::class.java)
-        val pIntent = PendingIntent.getService(context, 1, intent, 0)
-        pIntent.cancel()
-        alarmMgr?.cancel(pIntent)
-        Toast.makeText(context, "$position was clicked and requestCode1 was deleted", Toast.LENGTH_SHORT).show()
-    }
 
-//    リストデータの個数を数える関数
+    //    リストデータの個数を数える関数
     private fun listCount(sp: SharedPreferences): Int {
 
-        var rtNum = 1
-        for (j in 1..nfMaxNum) {
-            val str = sp.getString("taskNameKey$j", "NoData")
+        var rtNum = 0
+        for (j in 0..nfMaxNum) {
+            //todo 配列の中全てをチェックすべきか？
+            val str = sp.getString(alarmStrKeys[0]+j, "NoData")
             if (str != "NoData") {
                 rtNum = j
             } else {
                 break
             }
         }
-        if (rtNum != 1) {
-            rtNum--
-        }
+
         return rtNum
     }
 
-//    listを生成する関数
+    //    listを生成する関数
     private fun createAlarmList(listCountNum: Int, alarmList: MutableList<Alarm>, sp: SharedPreferences) {
+        for (i in 0..listCountNum) {
 
-        for (i in 1..listCountNum) {
-            val taskName = sp.getString("taskNameKey$i", "NoData")
-            val taskDate = sp.getString("taskDateKey$i", "NoData")
-            val taskTime = sp.getString("taskTimeKey$i", "NoData")
+            val alarmRowViews = arrayOfNulls<String?>(alarmStrKeysSize)
+            for (j in 0 until alarmStrKeysSize) {
+                alarmRowViews[j] = sp.getString(alarmStrKeys[j]+i,"NoData")
+            }
 
-//        nullでないならlistに情報を追加
-            if ((taskName != null) && (taskDate != null) && (taskTime != null)) {
-                alarmList.add(Alarm(taskName, taskDate, taskTime))
+
+            if (!alarmRowViews.contains(null)) {
+                alarmList.add(Alarm(alarmRowViews[0], alarmRowViews[1], alarmRowViews[2], alarmRowViews[3], alarmRowViews[4], alarmRowViews[5]))
             }
         }
     }
+
+
+//    override fun onClick(position: Int) {
+//        val alarmMgr = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+//        val intent = Intent(context, AlarmNotification::class.java)
+//        val pIntent = PendingIntent.getBroadcast(context, position, intent, 0)
+//        alarmMgr.cancel(pIntent)
+//        val sp = requireContext().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
+//        for (k in 0 until alarmStrKeysSize) {
+//            sp.edit().remove(alarmStrKeys[k] + position).apply()
+//        }
+//        val tr = parentFragmentManager.beginTransaction()
+//        tr.replace(R.id.fragmentContainerView, NotificationFragment())
+//        tr.commit()
+//        Toast.makeText(context, "alarm ID$position was deleted", Toast.LENGTH_SHORT).show()
+//
+//    }
 
 }

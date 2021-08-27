@@ -44,7 +44,6 @@ class HomeFragment : Fragment() {
                 val aqImage = view.findViewById<ImageView>(R.id.aqImage)
                 aqImage.setImageURI(_imageUri)
             }
-
         }
 
         //        Homeボタンが押されたときの処理
@@ -66,7 +65,6 @@ class HomeFragment : Fragment() {
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, _imageUri)
             startForTookPhotoResult.launch(intent)
-
         }
 
 //        AddAlarmが押されたときの処理
