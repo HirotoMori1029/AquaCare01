@@ -89,8 +89,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //            アラームに使用する定数を用意
             alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
             val alarmType = AlarmManager.RTC_WAKEUP
-
-            Log.d("AddTaskActivity","requestCode is $requestCode" )
+            Log.d("AddTaskActivity","task saved with requestCode$requestCode" )
 
 //            rpCheckBoxが入っていればリピートで設定
             if (rpCBisChecked) {

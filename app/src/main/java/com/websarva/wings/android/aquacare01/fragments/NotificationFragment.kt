@@ -22,8 +22,7 @@ import com.websarva.wings.android.aquacare01.R
 class NotificationFragment : Fragment() {
 //    表示最大数
     var nfMaxNum = 5
-//    sharePreferencesにあるalarmデータの数
-    private var listCountNum = 0
+
 //    保存するkeyの配列
     val alarmStrKeys = arrayOf(
         "taskName",
@@ -46,13 +45,37 @@ class NotificationFragment : Fragment() {
         val linearLayoutManager = LinearLayoutManager(view.context)
         //    sharedPreferencesを用意
         val sharedPreferences = requireActivity().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
-
-        listCountNum = listCount(sharedPreferences)
         val alarmList = mutableListOf<Alarm>()
-        createAlarmList(listCountNum, alarmList, sharedPreferences)
+        createAlarmList(nfMaxNum, alarmList, sharedPreferences)
 
         //RecyclerViewにAdapterとLayoutManagerを設定
-        lvAlarm.adapter = AlarmViewAdapter(alarmList)
+        val listener = object :AlarmViewAdapter.Listener {
+            override fun onClickText(index: Int) {
+                    val alarmMgr = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                    val intent = Intent(context, AlarmNotification::class.java)
+                    val pIntent = PendingIntent.getBroadcast(context, index, intent, 0)
+                    alarmMgr.cancel(pIntent)
+                    pIntent.cancel()
+                    val sp = requireContext().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
+                    for (k in 0 until alarmStrKeysSize) {
+                        sp.edit().remove(alarmStrKeys[k] + index).apply()
+                    }
+                    sp.edit().remove(alarmBooleanKey + index).apply()
+                    fragmentRefresh()
+                    Toast.makeText(context, "alarm ID$index was deleted", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onClickImage(index: Int) {
+                val taskState = sharedPreferences.getBoolean(alarmBooleanKey + index, true)
+                if (!taskState) {
+                    sharedPreferences.edit().putBoolean(alarmBooleanKey + index, true).apply()
+                    fragmentRefresh()
+                    Toast.makeText(context, "taskState $index was changed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        lvAlarm.adapter = AlarmViewAdapter(alarmList, listener)
         lvAlarm.layoutManager = linearLayoutManager
         lvAlarm.addItemDecoration(DividerItemDecoration(view.context, linearLayoutManager.orientation))
 
@@ -60,54 +83,25 @@ class NotificationFragment : Fragment() {
     }
 
 
-    //    リストデータの個数を数える関数
-    private fun listCount(sp: SharedPreferences): Int {
-
-        var rtNum = 0
-        for (j in 0..nfMaxNum) {
-            //todo 配列の中全てをチェックすべきか？
-            val str = sp.getString(alarmStrKeys[0]+j, "NoData")
-            if (str != "NoData") {
-                rtNum = j
-            } else {
-                break
-            }
-        }
-
-        return rtNum
-    }
-
-    //    listを生成する関数
-    private fun createAlarmList(listCountNum: Int, alarmList: MutableList<Alarm>, sp: SharedPreferences) {
-        for (i in 0..listCountNum) {
+    //    alarmListを生成する関数
+    private fun createAlarmList(rowNumber: Int, alarmList: MutableList<Alarm>, sp: SharedPreferences) {
+        for (i in 0..rowNumber) {
 
             val alarmRowViews = arrayOfNulls<String?>(alarmStrKeysSize)
             for (j in 0 until alarmStrKeysSize) {
                 alarmRowViews[j] = sp.getString(alarmStrKeys[j]+i,"NoData")
             }
-
-
+            val taskState = sp.getBoolean(alarmBooleanKey + i, true)
             if (!alarmRowViews.contains(null)) {
-                alarmList.add(Alarm(alarmRowViews[0], alarmRowViews[1], alarmRowViews[2], alarmRowViews[3], alarmRowViews[4], alarmRowViews[5]))
+                alarmList.add(Alarm(alarmRowViews[0], alarmRowViews[1], alarmRowViews[2], alarmRowViews[3], alarmRowViews[4], alarmRowViews[5], taskState))
             }
         }
     }
 
-
-//    override fun onClick(position: Int) {
-//        val alarmMgr = requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//        val intent = Intent(context, AlarmNotification::class.java)
-//        val pIntent = PendingIntent.getBroadcast(context, position, intent, 0)
-//        alarmMgr.cancel(pIntent)
-//        val sp = requireContext().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
-//        for (k in 0 until alarmStrKeysSize) {
-//            sp.edit().remove(alarmStrKeys[k] + position).apply()
-//        }
-//        val tr = parentFragmentManager.beginTransaction()
-//        tr.replace(R.id.fragmentContainerView, NotificationFragment())
-//        tr.commit()
-//        Toast.makeText(context, "alarm ID$position was deleted", Toast.LENGTH_SHORT).show()
-//
-//    }
+    private fun fragmentRefresh () {
+        val tr = parentFragmentManager.beginTransaction()
+        tr.replace(R.id.fragmentContainerView, NotificationFragment())
+        tr.commit()
+    }
 
 }

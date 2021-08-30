@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlin.coroutines.coroutineContext
 
 
-class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>) :
+class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>, private  val listener: Listener) :
     RecyclerView.Adapter<AlarmViewAdapter.AlarmListRecyclerViewHolder>() {
-
-    private lateinit var listener: View.OnClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlarmListRecyclerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -22,23 +21,24 @@ class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>) :
     override fun onBindViewHolder(holder: AlarmListRecyclerViewHolder, position: Int) {
 
         val alarm = alarmListData[position]
-        holder.alarmIcon.setImageResource(R.drawable.task_waiting_round)
+        if (alarm.taskState) {
+            holder.alarmIcon.setImageResource(R.drawable.task_waiting_round)
+        } else {
+            holder.alarmIcon.setImageResource(R.drawable.task_remaining_round)
+        }
+
         holder.alarmIcon.setOnClickListener {
-            listener.onClick(it)
+            listener.onClickImage(position)
         }
         holder.taskName.text = alarm.name
         holder.taskName.setOnClickListener {
-            listener.onClick(it)
+            listener.onClickText(position)
         }
         holder.taskDateNext.text = alarm.nextDate
         holder.taskTimeNext.text = alarm.nextTime
         holder.taskDatePrev.text = alarm.prevDate
         holder.taskTimePrev.text = alarm.prevTime
         holder.taskRepeat.text = alarm.repeat
-    }
-
-    fun setOnItemClickListener(listener: View.OnClickListener) {
-        this.listener = listener
     }
 
     override fun getItemCount(): Int = alarmListData.size
@@ -53,6 +53,11 @@ class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>) :
         val taskDatePrev: TextView = itemView.findViewById(R.id.taskDatePrev)
         val taskRepeat: TextView = itemView.findViewById(R.id.taskRepeat)
 
+    }
+
+    interface Listener {
+        fun onClickText(index: Int)
+        fun onClickImage(index: Int)
     }
 
 }

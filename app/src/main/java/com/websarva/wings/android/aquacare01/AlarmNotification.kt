@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.websarva.wings.android.aquacare01.fragments.NotificationFragment
 
@@ -16,14 +17,21 @@ class AlarmNotification : BroadcastReceiver() {
         val taskName :String? = intent.getStringExtra("TaskName")
         val nIntent = Intent(context, MainActivity::class.java)
         val pendingIntent :PendingIntent = PendingIntent.getActivity(context, requestCode + NotificationFragment().nfMaxNum, nIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+//        タスク状態を保存
+        val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
+        val taskState = sharedPref.getBoolean(NotificationFragment().alarmBooleanKey + requestCode, true)
+        Log.d("AlarmNotification", "before save")
+        if (taskState) {
+            sharedPref.edit().putBoolean(NotificationFragment().alarmBooleanKey + requestCode, false).apply() //試しに変更→変わらず
+            Log.d("AlarmNotification", "task state$requestCode is false")
+        }
+
+//        Notificationに関する記述
         val channelId = "default"
         val title= context.getString(R.string.app_name)
         val aMessage ="$taskName"
-
-//        NotificationChannelを設定
         val channel = NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_DEFAULT)
-
-//        NotificationManagerを設定
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.createNotificationChannel(channel)
 
