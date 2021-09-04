@@ -12,7 +12,6 @@ import android.widget.*
 import com.websarva.wings.android.aquacare01.fragments.NotificationFragment
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListener, DatePickerFragment.OnDateSetListener {
 
@@ -64,13 +63,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 
 //        viewの文字列を取得
             val tskName = addTaskNameEdit.text.toString()
-            val tskDate = addTaskDate.text.toString()
-            val tskTime = addTaskTime.text.toString()
-            val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 1
+            val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 0
 //        チェック状態を取得
             val rpCBisChecked = rpCheckBox.isChecked
             //        sharedPreferencesを準備
-            val sharedPref = getSharedPreferences("savedTaskInAquariumCare", Context.MODE_PRIVATE)
+            val sharedPref = getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
 //            当該requestCodeがある場合+1する
             requestCode = setReqCode(sharedPref)
 
@@ -81,10 +78,10 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
             pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, 0)
 
 //            sharedPrefに保存
-            savePreferences(NotificationFragment().alarmStrKeys[0] + requestCode, tskName, sharedPref)
-            savePreferences(NotificationFragment().alarmStrKeys[1] + requestCode, tskDate, sharedPref)
-            savePreferences(NotificationFragment().alarmStrKeys[2] + requestCode, tskTime, sharedPref)
+            savePreferences(NotificationFragment().alarmTaskNameKey + requestCode, tskName, sharedPref)
             sharedPref.edit().putBoolean(NotificationFragment().alarmBooleanKey + requestCode, true).apply()
+            sharedPref.edit().putLong(NotificationFragment().alarmNextLongKey + requestCode, calendar.time.time).apply()
+            sharedPref.edit().putInt(NotificationFragment().alarmRepeatDaysKey + requestCode, rpInt).apply()
 
 //            アラームに使用する定数を用意
             alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
@@ -94,7 +91,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //            rpCheckBoxが入っていればリピートで設定
             if (rpCBisChecked) {
                 if (alarmManager != null) {
-                    savePreferences(NotificationFragment().alarmStrKeys[5] + requestCode, "Repeat $rpInt days",sharedPref)
                     alarmManager?.setInexactRepeating(alarmType, calendar.timeInMillis, AlarmManager.INTERVAL_DAY * rpInt, pending)
 //                トーストで設定されたことを表示する
                     alarmStartToast ()
@@ -102,7 +98,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 
                 } else {
                 if (alarmManager != null) {
-                    savePreferences(NotificationFragment().alarmStrKeys[5] + requestCode, "No repeat",sharedPref)
                     alarmManager?.setExact(alarmType, calendar.timeInMillis, pending)
 //                トーストで設定されたことを表示する
                     alarmStartToast ()
@@ -142,7 +137,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         var reqCode = 0
         var gotDataCheckStr :String?
         for (i in 0..NotificationFragment().nfMaxNum) {
-            gotDataCheckStr = sp.getString(NotificationFragment().alarmStrKeys[0] + i, "noData")
+            gotDataCheckStr = sp.getString(NotificationFragment().alarmTaskNameKey + i, "noData")
             if (gotDataCheckStr != "noData") {
                 reqCode = i + 1
             } else {

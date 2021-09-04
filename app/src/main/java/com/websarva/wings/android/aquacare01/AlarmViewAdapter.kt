@@ -21,10 +21,12 @@ class AlarmViewAdapter(private val alarmListData: MutableList<Alarm>, private  v
     override fun onBindViewHolder(holder: AlarmListRecyclerViewHolder, position: Int) {
 
         val alarm = alarmListData[position]
-        if (alarm.taskState) {
+        if ((alarm.name != "NoData") && alarm.taskState) {
             holder.alarmIcon.setImageResource(R.drawable.task_waiting_round)
-        } else {
+        } else if ((alarm.name != "NoData") && !alarm.taskState){
             holder.alarmIcon.setImageResource(R.drawable.task_remaining_round)
+        } else {
+            holder.alarmIcon.setImageResource(R.drawable.task_no_data)
         }
 
         holder.alarmIcon.setOnClickListener {
