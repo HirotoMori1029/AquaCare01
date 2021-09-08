@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,10 +21,12 @@ import com.websarva.wings.android.aquacare01.R
 import java.text.SimpleDateFormat
 import java.util.*
 
+//todo: sharedPreferences変更の可能性あり
+
 class NotificationFragment : Fragment() {
 
     private var lvAlarm: RecyclerView? = null
-    private val alarmList = mutableListOf<Alarm>()
+    private var alarmList = mutableListOf<Alarm>()
 //    表示最大数
     var nfMaxNum = 5
 //    各種キーを設定
@@ -45,22 +46,22 @@ class NotificationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //todo: モードを後で戻す
+        //        RecyclerViewに設定をする
+        lvAlarm = view.findViewById(R.id.lvAlarm)
         val sharedPreferences = requireContext().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
+        alarmList = createAlarmList(sharedPreferences)
+        val adapter= AlarmViewAdapter(alarmList)
 
-//        click時のListenerを設定
-        val listener = object :AlarmViewAdapter.Listener {
+        //        click時のListenerを設定
+        adapter.listener = object :AlarmViewAdapter.Listener {
             override fun onClickText(index: Int) {
                 val alarmMgr =requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
                 val intent = Intent(context, AlarmNotification::class.java)
                 val pIntent = PendingIntent.getBroadcast(context, index, intent, 0)
                 alarmMgr.cancel(pIntent)
                 pIntent.cancel()
-                removeKeyData(sharedPreferences, alarmTaskNameKey + index)
-                removeKeyData(sharedPreferences, alarmNextLongKey + index)
-                removeKeyData(sharedPreferences, alarmPrevLongKey + index)
-                removeKeyData(sharedPreferences, alarmRepeatDaysKey + index)
-                removeKeyData(sharedPreferences, alarmBooleanKey + index)
+                removeIndexData(sharedPreferences, index)
+                adapter.deleteUpdate(index)
                 Toast.makeText(context, "alarm ID$index was deleted", Toast.LENGTH_SHORT).show()
             }
 
@@ -69,28 +70,35 @@ class NotificationFragment : Fragment() {
                 val taskState = sharedPreferences.getBoolean(alarmBooleanKey + index, true)
                 if (!taskState) {
                     sharedPreferences.edit().putBoolean(alarmBooleanKey + index, true).apply()
-                    Toast.makeText(context, "taskState $index was changed to true", Toast.LENGTH_SHORT).show()
-                    //PrevTimeを変更する処理
-                    val cal = Calendar.getInstance()
-                    sharedPreferences.edit().putLong(alarmPrevLongKey + index, cal.time.time).apply()
-                    //NextTimeを変更する処理
-
                     val rpDays = sharedPreferences.getInt(alarmRepeatDaysKey + index, 0)
                     if (rpDays != 0) {
+                        //PrevTimeを変更する処理
+                        val cal = Calendar.getInstance()
+                        sharedPreferences.edit().putLong(alarmPrevLongKey + index, cal.time.time).apply()
+                        val pDate = cal.time
+                        val prevDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(pDate)
+                        val prevTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(pDate)
+                        //NextTimeを変更する処理
                         val nDate = Date(sharedPreferences.getLong(alarmNextLongKey + index, 0))
                         cal.time = nDate
                         cal.add(Calendar.DATE, rpDays)
                         sharedPreferences.edit().putLong(alarmNextLongKey + index, cal.time.time).apply()
+                        val nextDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(nDate)
+                        val nextTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(nDate)
+
+                        adapter.stateUpdate(index, nextDateStr, nextTimeStr, prevDateStr, prevTimeStr)
+                    } else {
+                        removeIndexData(sharedPreferences, index)
+                        adapter.deleteUpdate(index)
                     }
+
                 }
             }
         }
 
-//        RecyclerViewに設定をする
-        lvAlarm = view.findViewById(R.id.lvAlarm)
         val linearLayoutManager = LinearLayoutManager(view.context)
         lvAlarm?.setHasFixedSize(true)
-        lvAlarm?.adapter= AlarmViewAdapter(createAlarmList(sharedPreferences),listener)
+        lvAlarm?.adapter= adapter
         lvAlarm?.layoutManager = linearLayoutManager
         lvAlarm?.addItemDecoration(DividerItemDecoration(context, linearLayoutManager.orientation))
     }
@@ -119,8 +127,12 @@ class NotificationFragment : Fragment() {
         return if (date != 0L) {SimpleDateFormat(format, Locale.getDefault()).format(Date(date))} else {"NoData"}
     }
 
-    private fun removeKeyData (sp: SharedPreferences, key: String) {
-        sp.edit().remove(key).apply()
+    private fun removeIndexData (sp: SharedPreferences, index:Int) {
+        sp.edit().remove(alarmTaskNameKey + index).apply()
+        sp.edit().remove(alarmNextLongKey + index).apply()
+        sp.edit().remove(alarmPrevLongKey + index).apply()
+        sp.edit().remove(alarmRepeatDaysKey + index).apply()
+        sp.edit().remove(alarmBooleanKey + index).apply()
     }
 
 }

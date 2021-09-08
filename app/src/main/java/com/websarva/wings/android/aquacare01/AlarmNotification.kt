@@ -6,7 +6,6 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.websarva.wings.android.aquacare01.fragments.NotificationFragment
@@ -23,12 +22,8 @@ class AlarmNotification : BroadcastReceiver() {
         val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
         val testKey = NotificationFragment().alarmBooleanKey + requestCode
         val taskState = sharedPref.getBoolean(testKey, false)
-        Toast.makeText(context, "received $taskState and key is $testKey", Toast.LENGTH_LONG).show()
         if (taskState) {
-            //        テストコード
                 sharedPref.edit().putBoolean(testKey, false).apply()
-                val taskStateSaved = sharedPref.getBoolean(testKey, false)
-                Toast.makeText(context, "saved as $taskStateSaved and key is $testKey", Toast.LENGTH_LONG).show()
         }
 
 //        Notificationに関する記述

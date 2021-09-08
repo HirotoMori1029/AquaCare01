@@ -44,7 +44,7 @@ class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener 
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
-        return SimpleDateFormat("HH : mm").format(calendar.time)
+        return SimpleDateFormat("HH : mm", Locale.getDefault()).format(calendar.time)
     }
 
     override fun onTimeSet(view: TimePicker, hourOfDay: Int, minute: Int) {
