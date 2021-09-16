@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +29,7 @@ class NotificationFragment : Fragment() {
     private var lvAlarm: RecyclerView? = null
     private var alarmList = mutableListOf<Alarm>()
 //    表示最大数
-    var nfMaxNum = 5
+    val nfMaxNum = 5
 //    各種キーを設定
     val alarmTaskNameKey = "taskName"
     val alarmNextLongKey = "taskNext"
@@ -54,12 +55,8 @@ class NotificationFragment : Fragment() {
 
         //        click時のListenerを設定
         adapter.listener = object :AlarmViewAdapter.Listener {
-            override fun onClickText(index: Int) {
-                val alarmMgr =requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                val intent = Intent(context, AlarmNotification::class.java)
-                val pIntent = PendingIntent.getBroadcast(context, index, intent, 0)
-                alarmMgr.cancel(pIntent)
-                pIntent.cancel()
+            override fun onClickBtn(index: Int) {
+                cancelPIntent(index)
                 removeIndexData(sharedPreferences, index)
                 adapter.deleteUpdate(index)
                 Toast.makeText(context, "alarm ID$index was deleted", Toast.LENGTH_SHORT).show()
@@ -82,9 +79,11 @@ class NotificationFragment : Fragment() {
                         val nDate = Date(sharedPreferences.getLong(alarmNextLongKey + index, 0))
                         cal.time = nDate
                         cal.add(Calendar.DATE, rpDays)
-                        sharedPreferences.edit().putLong(alarmNextLongKey + index, cal.time.time).apply()
-                        val nextDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(nDate)
-                        val nextTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(nDate)
+                        val nDateDisplay = cal.time
+                        Log.d("nextDate","nDate = $nDate, nDateDisplay = $nDateDisplay")
+                        sharedPreferences.edit().putLong(alarmNextLongKey + index, nDateDisplay.time).apply()
+                        val nextDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(nDateDisplay)
+                        val nextTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(nDateDisplay)
 
                         adapter.stateUpdate(index, nextDateStr, nextTimeStr, prevDateStr, prevTimeStr)
                     } else {
@@ -133,6 +132,14 @@ class NotificationFragment : Fragment() {
         sp.edit().remove(alarmPrevLongKey + index).apply()
         sp.edit().remove(alarmRepeatDaysKey + index).apply()
         sp.edit().remove(alarmBooleanKey + index).apply()
+    }
+
+    private fun cancelPIntent (index: Int) {
+        val alarmMgr =requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, AlarmNotification::class.java)
+        val pIntent = PendingIntent.getBroadcast(context, index, intent, 0)
+        alarmMgr.cancel(pIntent)
+        pIntent.cancel()
     }
 
 }

@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.websarva.wings.android.aquacare01.fragments.NotificationFragment
 
@@ -18,15 +18,7 @@ class AlarmNotification : BroadcastReceiver() {
         val nIntent = Intent(context, MainActivity::class.java)
         val pendingIntent :PendingIntent = PendingIntent.getActivity(context, requestCode + NotificationFragment().nfMaxNum, nIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-//        タスク状態を保存
-        val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
-        val testKey = NotificationFragment().alarmBooleanKey + requestCode
-        val taskState = sharedPref.getBoolean(testKey, false)
-        if (taskState) {
-                sharedPref.edit().putBoolean(testKey, false).apply()
-        }
-
-//        Notificationに関する記述
+        //        Notificationに関する記述
         val channelId = "default"
         val title= context.getString(R.string.app_name)
         val aMessage ="$taskName"
@@ -43,6 +35,16 @@ class AlarmNotification : BroadcastReceiver() {
         builder.setAutoCancel(true)
 //        通知
         notificationManager.notify(R.string.app_name, builder.build())
+
+//        タスク状態を保存
+        val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
+        val key = NotificationFragment().alarmBooleanKey + requestCode
+        val taskState = sharedPref.getBoolean(key, false)
+        if (taskState) {
+            sharedPref.edit().putBoolean(key, false).apply()
+        }
+
+
 
     }
 }

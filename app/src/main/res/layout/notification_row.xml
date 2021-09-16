@@ -5,18 +5,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="16dp"
+    android:paddingBottom="8dp"
     android:background="#fffff0">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/alarmIcon"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginEnd="24dp"
+        android:elevation="5dp"
+        android:background="@color/white"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="@id/taskRepeat"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/taskName"
-        tools:srcCompat="@tools:sample/avatars" />
+        app:shapeAppearanceOverlay="@style/circleImageView"
+        tools:srcCompat="@tools:sample/avatars"
+        android:contentDescription="taskStateIcon" />
 
     <TextView
         android:id="@+id/taskName"
@@ -26,11 +30,7 @@
         android:layout_marginTop="16dp"
         android:text="default"
         android:textStyle="bold"
-        android:textSize="24sp"
-        android:textColor="#0000ff"
-        android:shadowColor="#000000"
-        android:shadowDx="3"
-        android:shadowDy="3"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +41,6 @@
         android:layout_marginStart="8dp"
         android:textSize="16sp"
         android:text="Next"
-        android:textColor="@color/black"
         android:includeFontPadding="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskName"/>
@@ -53,7 +52,6 @@
         android:layout_marginStart="8dp"
         android:textSize="14sp"
         android:text="Time:"
-        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/taskNextStr"
         app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
 
@@ -64,7 +62,6 @@
         android:layout_marginStart="8dp"
         android:textSize="14sp"
         android:text="XX:XX"
-        android:textColor="@color/black"
         app:layout_constraintStart_toEndOf="@+id/taskTimeNextStr"
         app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
 
@@ -74,7 +71,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="Date:"
-        android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/taskTimeNext"
         app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
@@ -85,7 +81,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="MM/dd"
-        android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintStart_toEndOf="@+id/taskDateNextStr"
         app:layout_constraintBottom_toBottomOf="@+id/taskNextStr"/>
@@ -145,14 +140,28 @@
         android:id="@+id/taskRepeat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="8dp"
+        android:includeFontPadding="false"
         android:text="No data of repeat"
         android:textSize="10sp"
-        android:includeFontPadding="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/taskDatePrev"/>
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDatePrev" />
 
+    <Button
+        android:id="@+id/taskDeleteBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#f0f0f0"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text="DELETE"
+        android:textColor="#808080"
+        android:textSize="12sp"
+        android:enabled="false"
+        app:layout_constraintStart_toStartOf="@+id/taskPrevStr"
+        app:layout_constraintTop_toBottomOf="@+id/taskPrevStr" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

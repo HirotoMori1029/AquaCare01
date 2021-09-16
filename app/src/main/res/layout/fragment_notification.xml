@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:text="Alarm list"
+        android:text="@string/alarm_list"
         android:textSize="24sp"
         android:gravity="center_horizontal"
         android:background="@color/design_default_color_primary"

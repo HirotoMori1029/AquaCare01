@@ -20,6 +20,8 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
     private var pending: PendingIntent? = null
     private var requestCode = 0
     private val calendar = Calendar.getInstance()
+    private val titleLengthLimit = 100
+    private val repeatDaysLimit = 365
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,46 +66,72 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //        viewの文字列を取得
             val tskName = addTaskNameEdit.text.toString()
             val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 0
-//        チェック状態を取得
-            val rpCBisChecked = rpCheckBox.isChecked
-            //        sharedPreferencesを準備
-            val sharedPref = getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
-//            当該requestCodeがある場合+1する
-            requestCode = setReqCode(sharedPref)
-
-//        intentを生成
-            val intent = Intent(applicationContext, AlarmNotification::class.java)
-            intent.putExtra("RequestCode", requestCode)
-            intent.putExtra("TaskName", tskName)
-            pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, 0)
-
-//            sharedPrefに保存
-            savePreferences(NotificationFragment().alarmTaskNameKey + requestCode, tskName, sharedPref)
-            sharedPref.edit().putBoolean(NotificationFragment().alarmBooleanKey + requestCode, true).apply()
-            sharedPref.edit().putLong(NotificationFragment().alarmNextLongKey + requestCode, calendar.time.time).apply()
-            sharedPref.edit().putInt(NotificationFragment().alarmRepeatDaysKey + requestCode, rpInt).apply()
-
-//            アラームに使用する定数を用意
-            alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
-            val alarmType = AlarmManager.RTC_WAKEUP
-            Log.d("AddTaskActivity","task saved with requestCode$requestCode" )
-
-//            rpCheckBoxが入っていればリピートで設定
-            if (rpCBisChecked) {
-                if (alarmManager != null) {
-                    alarmManager?.setInexactRepeating(alarmType, calendar.timeInMillis, AlarmManager.INTERVAL_DAY * rpInt, pending)
-//                トーストで設定されたことを表示する
-                    alarmStartToast ()
+            when {
+                tskName.length >= titleLengthLimit -> {
+                    Toast.makeText(applicationContext, R.string.character_limit, Toast.LENGTH_LONG).show()
                 }
+                rpInt >= repeatDaysLimit -> {
+                    Toast.makeText(applicationContext, R.string.repeat_period_limit, Toast.LENGTH_LONG).show()
+                }
+                else -> {
+        //              チェック状態を取得
+                    val rpCBisChecked = rpCheckBox.isChecked
+                    //        sharedPreferencesを準備
+                    val sharedPref =
+                        getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
+        //              すでにIDが存在する場合、+1する
+                    requestCode = setReqCode(sharedPref)
 
-                } else {
-                if (alarmManager != null) {
-                    alarmManager?.setExact(alarmType, calendar.timeInMillis, pending)
-//                トーストで設定されたことを表示する
-                    alarmStartToast ()
+        //              intentを生成
+                    val intent = Intent(applicationContext, AlarmNotification::class.java)
+                    intent.putExtra("RequestCode", requestCode)
+                    intent.putExtra("TaskName", tskName)
+                    pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, 0)
+
+        //              sharedPrefに保存
+                    savePreferences(
+                        NotificationFragment().alarmTaskNameKey + requestCode,
+                        tskName,
+                        sharedPref
+                    )
+                    sharedPref.edit()
+                        .putBoolean(NotificationFragment().alarmBooleanKey + requestCode, true).apply()
+                    sharedPref.edit().putLong(
+                        NotificationFragment().alarmNextLongKey + requestCode,
+                        calendar.time.time
+                    ).apply()
+                    sharedPref.edit()
+                        .putInt(NotificationFragment().alarmRepeatDaysKey + requestCode, rpInt).apply()
+
+        //              アラームに使用する定数を用意
+                    alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
+                    val alarmType = AlarmManager.RTC_WAKEUP
+                    Log.d("AddTaskActivity", "task saved with requestCode$requestCode")
+
+        //              rpCheckBoxが入っていればリピートで設定
+                    if (rpCBisChecked) {
+                        if (alarmManager != null) {
+                            //todo: interval を修正
+                            alarmManager?.setRepeating(
+                                alarmType,
+                                calendar.timeInMillis,
+                                AlarmManager.INTERVAL_FIFTEEN_MINUTES * rpInt,
+                                pending
+                            )
+        //                      トーストで設定されたことを表示する
+                            alarmStartToast()
+                        }
+
+                    } else {
+                        if (alarmManager != null) {
+                            alarmManager?.setExact(alarmType, calendar.timeInMillis, pending)
+        //                トーストで設定されたことを表示する
+                            alarmStartToast()
+                        }
+                    }
+                    finish()
                 }
             }
-            finish()
         }
 
     }

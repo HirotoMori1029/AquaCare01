@@ -9,8 +9,12 @@
         <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/fragment_notification.xml" value="0.17708333333333334" />
         <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/fragment_recode.xml" value="0.15896739130434784" />
+        <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/fragment_record.xml" value="0.25677083333333334" />
         <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/fragment_setting.xml" value="0.18931159420289856" />
         <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/notification_row.xml" value="0.33" />
+        <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/recode_row.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/record_row.xml" value="0.25677083333333334" />
+        <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/layout/settings_row.xml" value="0.21965579710144928" />
         <entry key="..\:/Users/ariga/AndroidStudioProjects/AquaCare01/app/src/main/res/menu/menu.xml" value="0.2921875" />
       </map>
     </option>

@@ -13,14 +13,8 @@
     <fragment
         android:id="@+id/recode"
         android:name="com.websarva.wings.android.aquacare01.fragments.Recode"
-        android:label="Recode"
-        tools:layout="@layout/fragment_recode" />
-
-    <fragment
-        android:id="@+id/settingFragment"
-        android:name="com.websarva.wings.android.aquacare01.fragments.SettingFragment"
-        android:label="Settings"
-        tools:layout="@layout/fragment_setting" />
+        android:label="Record"
+        tools:layout="@layout/fragment_record" />
 
     <fragment
         android:id="@+id/notificationFragment"

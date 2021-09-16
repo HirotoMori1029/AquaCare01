@@ -7,7 +7,7 @@
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_baseline_home_24"/>
     <item
-        android:title="Recode"
+        android:title="Record"
         android:id="@+id/recode"
         android:icon="@drawable/ic_baseline_recode_24"/>
 

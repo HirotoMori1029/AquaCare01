@@ -19,14 +19,20 @@
     <string name="dialog_cancel">Cancel</string>
 
     <!-- NotificationFragment-->
+    <string name="alarm_list">Alarm list</string>
     <string name="notification_channel_name">aquarium task</string>
     <string name="alarm_start">Alarm has been set</string>
-    <string name="no_data_str">No Data</string>
+    <string name="no_data_str">NoData</string>
 
-    <!-- AddTaskFragment -->
+    <!-- AddTaskActivity -->
     <string name="add_task_title">AddTask</string>
     <string name="input_name">Task Name</string>
     <string name="input_date">Date</string>
     <string name="input_time">Time</string>
     <string name="save">SAVE</string>
+    <string name="character_limit">Limit on the number of characters</string>
+    <string name="repeat_period_limit">Repeat period must be 365 or less</string>
+
+    <!-- RecodeFragment -->
+    <string name="recode_date"><u>MM/dd/yyyy</u></string>
 </resources>
