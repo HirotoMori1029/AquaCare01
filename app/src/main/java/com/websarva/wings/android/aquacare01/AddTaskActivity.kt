@@ -78,7 +78,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     val rpCBisChecked = rpCheckBox.isChecked
                     //        sharedPreferencesを準備
                     val sharedPref =
-                        getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
+                        getSharedPreferences(NotificationFragment().taskSaveFileName, Context.MODE_MULTI_PROCESS)
         //              すでにIDが存在する場合、+1する
                     requestCode = setReqCode(sharedPref)
 

@@ -28,6 +28,7 @@ class NotificationFragment : Fragment() {
 
     private var lvAlarm: RecyclerView? = null
     private var alarmList = mutableListOf<Alarm>()
+    val taskSaveFileName = "savedTaskInAquariumCare"
 //    表示最大数
     val nfMaxNum = 5
 //    各種キーを設定
@@ -49,7 +50,7 @@ class NotificationFragment : Fragment() {
 
         //        RecyclerViewに設定をする
         lvAlarm = view.findViewById(R.id.lvAlarm)
-        val sharedPreferences = requireContext().getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
+        val sharedPreferences = requireContext().getSharedPreferences(taskSaveFileName, Context.MODE_MULTI_PROCESS)
         alarmList = createAlarmList(sharedPreferences)
         val adapter= AlarmViewAdapter(alarmList)
 

@@ -16,6 +16,7 @@ import java.util.*
 class Recode : Fragment() {
 
     private val date = Date().time
+    val pathListStr = "filePathInAquariumCare"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

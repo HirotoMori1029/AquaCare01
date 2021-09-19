@@ -8,6 +8,7 @@
     android:layout_margin="8dp"
     app:cardElevation="5dp"
     app:cardCornerRadius="4dp"
+    app:cardBackgroundColor="#ffeeff"
     android:background="#ddffff">
 
     <LinearLayout
@@ -35,6 +36,7 @@
         android:background="@drawable/border"
         android:layout_gravity="center"
         android:elevation="3dp"
+        android:padding="4dp"
         tools:srcCompat="@tools:sample/avatars"
         android:contentDescription="recodeImage" />
 
@@ -42,12 +44,12 @@
         android:id="@+id/recodeDeleteBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#f0f0f0"
+        android:backgroundTint="@color/black"
         android:enabled="false"
         android:minWidth="0dp"
         android:minHeight="0dp"
         android:text="DELETE"
-        android:textColor="#808080"
+        android:textColor="@color/white"
         android:textSize="12sp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"

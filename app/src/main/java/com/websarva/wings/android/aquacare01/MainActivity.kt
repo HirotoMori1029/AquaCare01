@@ -3,11 +3,17 @@ package com.websarva.wings.android.aquacare01
 
 
 
+import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import java.lang.Exception
 
 
 //    EXTRAMESSAGE_test
@@ -25,6 +31,5 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
         bottomNavigationView.setupWithNavController(navController)
 
-        }
-
+    }
 }
