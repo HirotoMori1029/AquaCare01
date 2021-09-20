@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Matrix
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -47,23 +48,26 @@ class HomeFragment : Fragment() {
         val addRecordBtn = view.findViewById<Button>(R.id.addRecordBtn)
 
         //fileがあればHome画面に表示させる
-        displayBmp = readImgFromFileName(requireContext())
+        displayBmp = readHomeImg(requireContext())
         if (displayBmp != null) {
             aqImage.setImageBitmap(displayBmp)
         }
 
         //共有ファイルの選択から返ってきた後の処理
-        //選択された画像を固有の内部ストレージに保存し、表示させる
+        //選択された画像をリサイズした上で固有の内部ストレージに保存し、表示させる
         val startForSetBitmapResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 try {
                     result.data?.data?.also { uri ->
                         val inputStream = requireContext().contentResolver.openInputStream(uri)
-                        val gotBitmap = BitmapFactory.decodeStream(inputStream)
+                        var gotBitmap = BitmapFactory.decodeStream(inputStream)
+                        //縦が長ければ回転させる
+                        if (gotBitmap.width <= gotBitmap.height) {
+                            gotBitmap = rotateBitmap(gotBitmap)
+                        }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        //function resize
                         saveImgFromBmp(resizedBitmap, requireContext())
-                        val displayBmp = readImgFromFileName(requireContext())
+                        displayBmp = readHomeImg(requireContext())
                         aqImage.setImageBitmap(displayBmp)
                     }
                 } catch (e: Exception) {
@@ -109,7 +113,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun readImgFromFileName(context: Context): Bitmap? {
+    private fun readHomeImg(context: Context): Bitmap? {
         return try {
             val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
             BitmapFactory.decodeStream(bufferedInputStream)
@@ -121,16 +125,15 @@ class HomeFragment : Fragment() {
     }
 
     private fun resizeBitmap (beforeResizeBmp: Bitmap, imageView: ImageView) :Bitmap {
-        return if (beforeResizeBmp.width >= beforeResizeBmp.height) {
-            val resizeScale = beforeResizeBmp.width.toDouble() / imageView.width.toDouble()
-            val resizedWidth = (beforeResizeBmp.width / resizeScale).toInt()
-            val resizedHeight = (beforeResizeBmp.height / resizeScale).toInt()
-            Bitmap.createScaledBitmap(beforeResizeBmp, resizedWidth, resizedHeight, true)
-        } else {
-            val resizeScale = beforeResizeBmp.height.toDouble() / imageView.height.toDouble()
-            val resizedWidth = (beforeResizeBmp.width / resizeScale).toInt()
-            val resizedHeight = (beforeResizeBmp.height / resizeScale).toInt()
-            Bitmap.createScaledBitmap(beforeResizeBmp, resizedWidth, resizedHeight, true)
-        }
+        val resizeScale = beforeResizeBmp.width.toDouble() / imageView.width.toDouble()
+        val resizedWidth = (beforeResizeBmp.width / resizeScale).toInt()
+        val resizedHeight = (beforeResizeBmp.height / resizeScale).toInt()
+        return Bitmap.createScaledBitmap(beforeResizeBmp, resizedWidth, resizedHeight, true)
+    }
+
+    private fun rotateBitmap (bitmap: Bitmap) :Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(-90F)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 }
