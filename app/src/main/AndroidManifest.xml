@@ -14,10 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AquaCare01">
         <activity android:name=".AddTaskActivity"/>
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
