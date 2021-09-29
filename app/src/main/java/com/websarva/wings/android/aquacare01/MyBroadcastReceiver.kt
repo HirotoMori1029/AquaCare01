@@ -1,5 +1,6 @@
 package com.websarva.wings.android.aquacare01
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -9,14 +10,14 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.websarva.wings.android.aquacare01.fragments.NotificationFragment
-import java.lang.IllegalArgumentException
+import java.util.*
 
 
 class MyBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
 
         if (intent.action == "com.websarva.wings.android.aquacare01.NOTIFY_ALARM") {
-            //todo 怪しい
             val requestCode :Int = intent.getIntExtra("RequestCode", 0)
             val taskName :String? = intent.getStringExtra("TaskName")
             val nIntent = Intent(context, MainActivity::class.java)
@@ -42,14 +43,42 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             notificationManager.notify(R.string.app_name, builder.build())
 
 //        タスク状態を保存
-            val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
             val key = NotificationFragment().alarmBooleanKey + requestCode
             val taskState = sharedPref.getBoolean(key, false)
             if (taskState) {
                 sharedPref.edit().putBoolean(key, false).apply()
             }
         } else if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
+            //アラームの再設定を行う
             Log.d("MyBroadcastReceiver", "Booted!!")
+            for (alarmID in 0..NotificationFragment().nfMaxNum) {
+                val alarmTaskName = sharedPref.getString(NotificationFragment().alarmTaskNameKey + alarmID, "NoData")
+                if (alarmTaskName != "NoData") {
+                    val almIntent = Intent(context, MyBroadcastReceiver::class.java).apply {
+                        action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
+                        putExtra("RequestCode", alarmID)
+                        putExtra("TaskName", alarmTaskName)
+                    }
+
+                    val pIntent = PendingIntent.getBroadcast(context, alarmID, almIntent, PendingIntent.FLAG_IMMUTABLE)
+                    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                    val alarmType = AlarmManager.RTC_WAKEUP
+                    val alarmNextLong = sharedPref.getLong(NotificationFragment().alarmNextLongKey + alarmID, 0)
+                    val calendar = Calendar.getInstance()
+                    calendar.time = Date(alarmNextLong)
+                    val alarmRepeatDays = sharedPref.getInt(NotificationFragment().alarmRepeatDaysKey + alarmID, 0)
+                    if (alarmRepeatDays != 0) {
+                        alarmManager.setRepeating(alarmType,calendar.timeInMillis,AlarmManager.INTERVAL_DAY * alarmRepeatDays, pIntent)
+                        Log.d("MyBroadcastReceiver", "Repeat alarm has been set as alarmID$alarmID")
+                    } else {
+                        alarmManager.setExact(alarmType, calendar.timeInMillis, pIntent)
+                        Log.d("MyBroadcastReceiver", "Normal alarm has been set as alarmID$alarmID")
+                    }
+                } else {
+                    break
+                }
+            }
+
         }
     }
 }

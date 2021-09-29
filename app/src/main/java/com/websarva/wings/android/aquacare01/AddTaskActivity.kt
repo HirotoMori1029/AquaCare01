@@ -84,7 +84,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 
         //              intentを生成
                     val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
-                    //todo 怪しい
                     intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
                     intent.putExtra("RequestCode", requestCode)
                     intent.putExtra("TaskName", tskName)
@@ -116,7 +115,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                             alarmManager?.setRepeating(
                                 alarmType,
                                 calendar.timeInMillis,
-                                AlarmManager.INTERVAL_FIFTEEN_MINUTES * rpInt,
+                                AlarmManager.INTERVAL_DAY * rpInt,
                                 pending
                             )
         //                      トーストで設定されたことを表示する
