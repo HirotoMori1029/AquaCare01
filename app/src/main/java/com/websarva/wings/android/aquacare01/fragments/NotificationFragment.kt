@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.websarva.wings.android.aquacare01.Alarm
-import com.websarva.wings.android.aquacare01.AlarmNotification
 import com.websarva.wings.android.aquacare01.AlarmViewAdapter
+import com.websarva.wings.android.aquacare01.MyBroadcastReceiver
 import com.websarva.wings.android.aquacare01.R
 import java.text.SimpleDateFormat
 import java.util.*
@@ -137,9 +137,12 @@ class NotificationFragment : Fragment() {
 
     private fun cancelPIntent (index: Int) {
         val alarmMgr =requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, AlarmNotification::class.java)
-        val pIntent = PendingIntent.getBroadcast(context, index, intent, 0)
+        //todo 嫌な予感
+        val intent = Intent(requireContext(), MyBroadcastReceiver::class.java)
+        val pIntent = PendingIntent.getBroadcast(requireContext(), index, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmMgr.cancel(pIntent)
+        Log.d("cancelPIntent", "RequestCode is $index")
+        //todo: いらないかも
         pIntent.cancel()
     }
 

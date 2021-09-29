@@ -83,10 +83,12 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     requestCode = setReqCode(sharedPref)
 
         //              intentを生成
-                    val intent = Intent(applicationContext, AlarmNotification::class.java)
+                    val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+                    //todo 怪しい
+                    intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
                     intent.putExtra("RequestCode", requestCode)
                     intent.putExtra("TaskName", tskName)
-                    pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, 0)
+                    pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
 
         //              sharedPrefに保存
                     savePreferences(
@@ -106,12 +108,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         //              アラームに使用する定数を用意
                     alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
                     val alarmType = AlarmManager.RTC_WAKEUP
-                    Log.d("AddTaskActivity", "task saved with requestCode$requestCode")
+                    Log.d("AddTaskActivity", "task saved with RequestCode$requestCode")
 
         //              rpCheckBoxが入っていればリピートで設定
                     if (rpCBisChecked) {
                         if (alarmManager != null) {
-                            //todo: interval を修正
                             alarmManager?.setRepeating(
                                 alarmType,
                                 calendar.timeInMillis,
