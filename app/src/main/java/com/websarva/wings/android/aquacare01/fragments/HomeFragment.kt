@@ -28,7 +28,7 @@ import java.lang.Exception
 
 class HomeFragment : Fragment() {
 
-    private val fileName = "aquarium_home.jpeg"
+    private val hFileName = "aquarium_home.jpeg"
     private val alarmID = 0
     private val recFileName = "recordImg$alarmID.jpeg"
     private var displayBmp: Bitmap? = null
@@ -50,7 +50,7 @@ class HomeFragment : Fragment() {
         val addRecordBtn = view.findViewById<Button>(R.id.addRecordBtn)
 
         //fileがあればHome画面に表示させる
-        displayBmp = readHomeImg(requireContext())
+        displayBmp = readHomeImg(hFileName, requireContext())
         if (displayBmp != null) {
             aqImage.setImageBitmap(displayBmp)
         }
@@ -68,8 +68,8 @@ class HomeFragment : Fragment() {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        saveImgFromBmp(fileName, resizedBitmap, requireContext())
-                        displayBmp = readHomeImg(requireContext())
+                        saveImgFromBmp(hFileName, resizedBitmap, requireContext())
+                        displayBmp = readHomeImg(hFileName, requireContext())
                         aqImage.setImageBitmap(displayBmp)
                     }
                 } catch (e: Exception) {
@@ -139,12 +139,11 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun readHomeImg(context: Context): Bitmap? {
+    private fun readHomeImg(fileName: String, context: Context): Bitmap? {
         return try {
             val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
             BitmapFactory.decodeStream(bufferedInputStream)
         } catch (e: IOException) {
-
             e.printStackTrace()
             null
         }
