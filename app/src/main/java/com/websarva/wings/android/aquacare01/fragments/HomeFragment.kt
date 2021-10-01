@@ -28,7 +28,9 @@ import java.lang.Exception
 
 class HomeFragment : Fragment() {
 
-    private val fileName = "aquarium_home" + ".jpeg"
+    private val fileName = "aquarium_home.jpeg"
+    private val alarmID = 0
+    private val recFileName = "recordImg$alarmID.jpeg"
     private var displayBmp: Bitmap? = null
 
     override fun onCreateView(
@@ -53,9 +55,9 @@ class HomeFragment : Fragment() {
             aqImage.setImageBitmap(displayBmp)
         }
 
-        //共有ファイルの選択から返ってきた後の処理
+        //HomeImgの選択で共有ファイルの選択から返ってきた後の処理
         //選択された画像をリサイズした上で固有の内部ストレージに保存し、表示させる
-        val startForSetBitmapResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+        val startForSaveHomeImageResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 try {
                     result.data?.data?.also { uri ->
@@ -66,7 +68,7 @@ class HomeFragment : Fragment() {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        saveImgFromBmp(resizedBitmap, requireContext())
+                        saveImgFromBmp(fileName, resizedBitmap, requireContext())
                         displayBmp = readHomeImg(requireContext())
                         aqImage.setImageBitmap(displayBmp)
                     }
@@ -76,13 +78,33 @@ class HomeFragment : Fragment() {
             }
         }
 
+        //AddRecordBtnで共有ファイルの選択から返ってきた後の処理
+        val startForSaveRecordResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                try {
+                    result.data?.data?.also { uri ->
+                        val inputStream = requireContext().contentResolver.openInputStream(uri)
+                        var gotBitmap = BitmapFactory.decodeStream(inputStream)
+                        //縦が長ければ回転させる
+                        if (gotBitmap.width <= gotBitmap.height) {
+                            gotBitmap = rotateBitmap(gotBitmap)
+                        }
+                        val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
+                        saveImgFromBmp(recFileName, resizedBitmap, requireContext())
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
         //        HomeImageが押されたときの処理
         aqImage.setOnClickListener {
-            val recIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            val imgIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "image/*"
             }
-            startForSetBitmapResult.launch(recIntent)
+            startForSaveHomeImageResult.launch(imgIntent)
         }
 
 //        AddAlarmBtnが押されたときの処理
@@ -96,11 +118,15 @@ class HomeFragment : Fragment() {
 
         //        AddRecodeBtnが押されたときの処理
         addRecordBtn.setOnClickListener {
-
+            val recIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
+            startForSaveRecordResult.launch(recIntent)
         }
     }
 
-    private fun saveImgFromBmp (bmp: Bitmap, context: Context) {
+    private fun saveImgFromBmp (fileName: String, bmp: Bitmap, context: Context) {
         try {
             val byteArrOutputStream = ByteArrayOutputStream()
             val fileOutputStream: FileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
