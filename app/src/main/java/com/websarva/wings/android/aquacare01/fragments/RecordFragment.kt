@@ -17,7 +17,6 @@ class Recode : Fragment() {
 
     private val date = Date().time
     val recFileName = "recordImg0.jpeg"
-//    val pathListStr = "filePathInAquariumCare"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
