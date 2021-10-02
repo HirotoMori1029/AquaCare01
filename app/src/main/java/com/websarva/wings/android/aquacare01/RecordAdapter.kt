@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.websarva.wings.android.aquacare01.fragments.HomeFragment
 
 class RecordAdapter(private val recordList: List<Diary>): RecyclerView.Adapter<RecordAdapter.RecordRecyclerViewHolder>() {
 
@@ -16,7 +17,7 @@ class RecordAdapter(private val recordList: List<Diary>): RecyclerView.Adapter<R
 
     override fun onBindViewHolder(holder: RecordRecyclerViewHolder, position: Int) {
         val record = recordList[position]
-        holder.image.setImageResource(record.image)
+        holder.image.setImageBitmap(record.bitmap)
         holder.date.text = record.date
     }
 

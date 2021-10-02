@@ -29,8 +29,6 @@ import java.lang.Exception
 class HomeFragment : Fragment() {
 
     private val hFileName = "aquarium_home.jpeg"
-    private val alarmID = 0
-    private val recFileName = "recordImg$alarmID.jpeg"
     private var displayBmp: Bitmap? = null
 
     override fun onCreateView(
@@ -50,7 +48,7 @@ class HomeFragment : Fragment() {
         val addRecordBtn = view.findViewById<Button>(R.id.addRecordBtn)
 
         //fileがあればHome画面に表示させる
-        displayBmp = readHomeImg(hFileName, requireContext())
+        displayBmp = readImgFromFileName(hFileName, requireContext())
         if (displayBmp != null) {
             aqImage.setImageBitmap(displayBmp)
         }
@@ -69,7 +67,7 @@ class HomeFragment : Fragment() {
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
                         saveImgFromBmp(hFileName, resizedBitmap, requireContext())
-                        displayBmp = readHomeImg(hFileName, requireContext())
+                        displayBmp = readImgFromFileName(hFileName, requireContext())
                         aqImage.setImageBitmap(displayBmp)
                     }
                 } catch (e: Exception) {
@@ -90,7 +88,7 @@ class HomeFragment : Fragment() {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        saveImgFromBmp(recFileName, resizedBitmap, requireContext())
+                        saveImgFromBmp(Recode().recFileName, resizedBitmap, requireContext())
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -116,7 +114,7 @@ class HomeFragment : Fragment() {
             startActivity(tskIntent)
         }
 
-        //        AddRecodeBtnが押されたときの処理
+        //        AddRecordBtnが押されたときの処理
         addRecordBtn.setOnClickListener {
             val recIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
@@ -139,7 +137,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun readHomeImg(fileName: String, context: Context): Bitmap? {
+    fun readImgFromFileName(fileName: String, context: Context): Bitmap? {
         return try {
             val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
             BitmapFactory.decodeStream(bufferedInputStream)

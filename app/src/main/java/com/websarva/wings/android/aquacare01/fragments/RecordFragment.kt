@@ -16,13 +16,13 @@ import java.util.*
 class Recode : Fragment() {
 
     private val date = Date().time
-    val pathListStr = "filePathInAquariumCare"
+    val recFileName = "recordImg0.jpeg"
+//    val pathListStr = "filePathInAquariumCare"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_record, container, false)
     }
 
@@ -31,12 +31,10 @@ class Recode : Fragment() {
 
         val rvRecord: RecyclerView = view.findViewById(R.id.rvRecord)
         val dateStr = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(date)
+        val bitmap1 = HomeFragment().readImgFromFileName(recFileName, requireContext())
 
         val recordList = listOf(
-            Diary(R.drawable.record01, dateStr),
-            Diary(R.drawable.record02, dateStr),
-            Diary(R.drawable.record03, dateStr),
-            Diary(R.drawable.record04, dateStr)
+            Diary(bitmap1, dateStr),
         )
 
         rvRecord.adapter = RecordAdapter(recordList)

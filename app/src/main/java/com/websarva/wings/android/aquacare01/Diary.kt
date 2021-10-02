@@ -1,3 +1,5 @@
 package com.websarva.wings.android.aquacare01
 
-data class Diary (val image: Int, val date: String)
+import android.graphics.Bitmap
+
+data class Diary (val bitmap: Bitmap?, val date: String)
