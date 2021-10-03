@@ -35,7 +35,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             notificationManager.createNotificationChannel(channel)
 
             val builder = NotificationCompat.Builder(context, channelId)
-            builder.setSmallIcon(R.mipmap.ic_launcher) //todo 後で修正する
+            builder.setSmallIcon(R.mipmap.ic_launcher_foreground) //todo 後で修正する
             builder.setContentTitle(title)
             builder.setContentText(aMessage)
             builder.setContentIntent(pendingIntent)
