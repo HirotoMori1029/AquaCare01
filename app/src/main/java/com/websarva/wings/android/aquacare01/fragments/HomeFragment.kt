@@ -18,10 +18,7 @@ import android.widget.ImageView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.websarva.wings.android.aquacare01.AddTaskActivity
-import com.websarva.wings.android.aquacare01.EXTRA_MESSAGE
-import com.websarva.wings.android.aquacare01.ImageLoader
-import com.websarva.wings.android.aquacare01.R
+import com.websarva.wings.android.aquacare01.*
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.lang.Exception
@@ -31,6 +28,7 @@ class HomeFragment : Fragment() {
 
     private val hFileName = "aquarium_home.jpeg"
     private var displayBmp: Bitmap? = null
+    private val defaultValues = DefaultValues()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,7 +89,7 @@ class HomeFragment : Fragment() {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        saveImgFromBmp(Recode().recFileName, resizedBitmap, requireContext())
+                        saveImgFromBmp(defaultValues.recFileName, resizedBitmap, requireContext())
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -154,10 +152,11 @@ class HomeFragment : Fragment() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-//    //あとで実現する
-//    private fun setRecordNumber (sp: SharedPreferences, numberOfRecordKey :String) {
-//        if (sp.getInt(numberOfRecordKey, 0) == 0) {
-//
-//        }
-//    }
+    //あとで実現する
+    private fun setRecordNumber (sp: SharedPreferences, UrlOfRecordKey :String) {
+        for (recordID in 0..10)
+        if (sp.getInt(UrlOfRecordKey, 0) == 0) {
+
+        }
+    }
 }

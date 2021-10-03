@@ -9,11 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.websarva.wings.android.aquacare01.fragments.NotificationFragment
 import java.util.*
 
 
 class MyBroadcastReceiver : BroadcastReceiver() {
+    
+    private val defaultValues = DefaultValues()
+
     override fun onReceive(context: Context, intent: Intent) {
         val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
 
@@ -22,7 +24,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             val taskName :String? = intent.getStringExtra("TaskName")
             val nIntent = Intent(context, MainActivity::class.java)
             val pendingIntent :PendingIntent = PendingIntent.
-                    getActivity(context, requestCode + NotificationFragment().nfMaxNum, nIntent, PendingIntent.FLAG_IMMUTABLE)
+                    getActivity(context, requestCode + defaultValues.nfMaxNum, nIntent, PendingIntent.FLAG_IMMUTABLE)
 
             //        Notificationに関する記述
             val channelId = "default"
@@ -43,7 +45,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             notificationManager.notify(R.string.app_name, builder.build())
 
 //        タスク状態を保存
-            val key = NotificationFragment().alarmBooleanKey + requestCode
+            val key = defaultValues.alarmBooleanKey + requestCode
             val taskState = sharedPref.getBoolean(key, false)
             if (taskState) {
                 sharedPref.edit().putBoolean(key, false).apply()
@@ -51,8 +53,8 @@ class MyBroadcastReceiver : BroadcastReceiver() {
         } else if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             //アラームの再設定を行う
             Log.d("MyBroadcastReceiver", "Booted!!")
-            for (alarmID in 0..NotificationFragment().nfMaxNum) {
-                val alarmTaskName = sharedPref.getString(NotificationFragment().alarmTaskNameKey + alarmID, "NoData")
+            for (alarmID in 0..defaultValues.nfMaxNum) {
+                val alarmTaskName = sharedPref.getString(defaultValues.alarmTaskNameKey + alarmID, "NoData")
                 if (alarmTaskName != "NoData") {
                     val almIntent = Intent(context, MyBroadcastReceiver::class.java).apply {
                         action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
@@ -63,15 +65,15 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                     val pIntent = PendingIntent.getBroadcast(context, alarmID, almIntent, PendingIntent.FLAG_IMMUTABLE)
                     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
                     val alarmType = AlarmManager.RTC_WAKEUP
-                    val alarmNextLong = sharedPref.getLong(NotificationFragment().alarmNextLongKey + alarmID, 0)
+                    val alarmNextLong = sharedPref.getLong(defaultValues.alarmNextLongKey + alarmID, 0)
                     val calendar = Calendar.getInstance()
                     //NextTimeがリブートした時間よりも遅かったら、taskStateをfalseにする
                     if (calendar.time.time >= alarmNextLong) {
-                        sharedPref.edit().putBoolean(NotificationFragment().alarmBooleanKey + alarmID, false).apply()
+                        sharedPref.edit().putBoolean(defaultValues.alarmBooleanKey + alarmID, false).apply()
                         Log.d("MyBroadcastReceiver", "Task state for alarmID$alarmID has changed to false")
                     }
                     calendar.time = Date(alarmNextLong)
-                    val alarmRepeatDays = sharedPref.getInt(NotificationFragment().alarmRepeatDaysKey + alarmID, 0)
+                    val alarmRepeatDays = sharedPref.getInt(defaultValues.alarmRepeatDaysKey + alarmID, 0)
                     if (alarmRepeatDays != 0) {
                         alarmManager.setRepeating(alarmType,calendar.timeInMillis,AlarmManager.INTERVAL_DAY * alarmRepeatDays, pIntent)
                         Log.d("MyBroadcastReceiver", "Repeat alarm has been set as alarmID$alarmID")

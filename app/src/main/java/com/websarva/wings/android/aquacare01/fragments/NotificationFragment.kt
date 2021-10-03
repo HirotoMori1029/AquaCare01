@@ -15,10 +15,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.websarva.wings.android.aquacare01.Alarm
-import com.websarva.wings.android.aquacare01.AlarmViewAdapter
-import com.websarva.wings.android.aquacare01.MyBroadcastReceiver
-import com.websarva.wings.android.aquacare01.R
+import com.websarva.wings.android.aquacare01.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -28,15 +25,8 @@ class NotificationFragment : Fragment() {
 
     private var lvAlarm: RecyclerView? = null
     private var alarmList = mutableListOf<Alarm>()
-    val taskSaveFileName = "savedTaskInAquariumCare"
-//    表示最大数
-    val nfMaxNum = 5
-//    各種キーを設定
-    val alarmTaskNameKey = "taskName"
-    val alarmNextLongKey = "taskNext"
-    val alarmPrevLongKey = "taskPrev"
-    val alarmRepeatDaysKey = "taskRepeat"
-    val alarmBooleanKey = "taskState"
+    private val defaultValues = DefaultValues()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +40,7 @@ class NotificationFragment : Fragment() {
 
         //        RecyclerViewに設定をする
         lvAlarm = view.findViewById(R.id.lvAlarm)
-        val sharedPreferences = requireContext().getSharedPreferences(taskSaveFileName, Context.MODE_MULTI_PROCESS)
+        val sharedPreferences = requireContext().getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
         alarmList = createAlarmList(sharedPreferences)
         val adapter= AlarmViewAdapter(alarmList)
 
@@ -65,24 +55,24 @@ class NotificationFragment : Fragment() {
 
             override fun onClickImage(index: Int) {
 //                アイコンを変更する処理
-                val taskState = sharedPreferences.getBoolean(alarmBooleanKey + index, true)
+                val taskState = sharedPreferences.getBoolean(defaultValues.alarmBooleanKey + index, true)
                 if (!taskState) {
-                    sharedPreferences.edit().putBoolean(alarmBooleanKey + index, true).apply()
-                    val rpDays = sharedPreferences.getInt(alarmRepeatDaysKey + index, 0)
+                    sharedPreferences.edit().putBoolean(defaultValues.alarmBooleanKey + index, true).apply()
+                    val rpDays = sharedPreferences.getInt(defaultValues.alarmRepeatDaysKey + index, 0)
                     if (rpDays != 0) {
                         //PrevTimeを変更する処理
                         val cal = Calendar.getInstance()
-                        sharedPreferences.edit().putLong(alarmPrevLongKey + index, cal.time.time).apply()
+                        sharedPreferences.edit().putLong(defaultValues.alarmPrevLongKey + index, cal.time.time).apply()
                         val pDate = cal.time
                         val prevDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(pDate)
                         val prevTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(pDate)
                         //NextTimeを変更する処理
-                        val nDate = Date(sharedPreferences.getLong(alarmNextLongKey + index, 0))
+                        val nDate = Date(sharedPreferences.getLong(defaultValues.alarmNextLongKey + index, 0))
                         cal.time = nDate
                         cal.add(Calendar.DATE, rpDays)
                         val nDateDisplay = cal.time
                         Log.d("nextDate","nDate = $nDate, nDateDisplay = $nDateDisplay")
-                        sharedPreferences.edit().putLong(alarmNextLongKey + index, nDateDisplay.time).apply()
+                        sharedPreferences.edit().putLong(defaultValues.alarmNextLongKey + index, nDateDisplay.time).apply()
                         val nextDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(nDateDisplay)
                         val nextTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(nDateDisplay)
 
@@ -106,17 +96,17 @@ class NotificationFragment : Fragment() {
     //    alarmListを生成する関数
     private fun createAlarmList(sp: SharedPreferences) :MutableList<Alarm> {
 
-        for (i in 0..nfMaxNum) {
-            val name = sp.getString(alarmTaskNameKey + i, "NoData")
-            val nextDateLong = sp.getLong(alarmNextLongKey + i, 0)
+        for (i in 0..defaultValues.nfMaxNum) {
+            val name = sp.getString(defaultValues.alarmTaskNameKey + i, "NoData")
+            val nextDateLong = sp.getLong(defaultValues.alarmNextLongKey + i, 0)
             val nextDate = getDataOrNoData(nextDateLong, "MM / dd")
             val nextTime = getDataOrNoData(nextDateLong, "HH : mm")
-            val prevDateLong = sp.getLong(alarmPrevLongKey + i, 0)
+            val prevDateLong = sp.getLong(defaultValues.alarmPrevLongKey + i, 0)
             val prevDate = getDataOrNoData(prevDateLong, "MM / dd")
             val prevTime = getDataOrNoData(prevDateLong, "HH : mm")
-            val repeatDays = sp.getInt(alarmRepeatDaysKey + i, 0)
+            val repeatDays = sp.getInt(defaultValues.alarmRepeatDaysKey + i, 0)
             val repeatDaysStr = if (repeatDays == 0) {"NoRepeat"} else {"Repeat $repeatDays days"}
-            val taskState = sp.getBoolean(alarmBooleanKey + i, false)
+            val taskState = sp.getBoolean(defaultValues.alarmBooleanKey + i, false)
                 alarmList.add(Alarm(name, nextDate, nextTime, prevDate, prevTime, repeatDaysStr, taskState))
         }
 
@@ -128,11 +118,11 @@ class NotificationFragment : Fragment() {
     }
 
     private fun removeIndexData (sp: SharedPreferences, index:Int) {
-        sp.edit().remove(alarmTaskNameKey + index).apply()
-        sp.edit().remove(alarmNextLongKey + index).apply()
-        sp.edit().remove(alarmPrevLongKey + index).apply()
-        sp.edit().remove(alarmRepeatDaysKey + index).apply()
-        sp.edit().remove(alarmBooleanKey + index).apply()
+        sp.edit().remove(defaultValues.alarmTaskNameKey + index).apply()
+        sp.edit().remove(defaultValues.alarmNextLongKey + index).apply()
+        sp.edit().remove(defaultValues.alarmPrevLongKey + index).apply()
+        sp.edit().remove(defaultValues.alarmRepeatDaysKey + index).apply()
+        sp.edit().remove(defaultValues.alarmBooleanKey + index).apply()
     }
 
     private fun cancelPIntent (index: Int) {
