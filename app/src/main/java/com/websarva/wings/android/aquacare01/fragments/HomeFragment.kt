@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,13 +23,15 @@ import com.websarva.wings.android.aquacare01.*
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.lang.Exception
+import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeFragment : Fragment() {
 
+    private val defaultValues = DefaultValues()
     private val hFileName = "aquarium_home.jpeg"
     private var displayBmp: Bitmap? = null
-    private val defaultValues = DefaultValues()
+    private var recordID = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +43,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        var recordNumber = 0
 
         //各ビューを取得
         val aqImage = view.findViewById<ImageView>(R.id.aqImage)
@@ -89,7 +90,19 @@ class HomeFragment : Fragment() {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        saveImgFromBmp(defaultValues.recFileName+".jpeg", resizedBitmap, requireContext())
+                        val sp = requireContext().getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
+                        recordID = setRecordNumber(sp, defaultValues.recFileNameKey)
+                        val fileName = defaultValues.recFileName + recordID +".jpeg"
+                        saveImgFromBmp(fileName, resizedBitmap, requireContext())
+                        Log.d("HomeFragment", "Image has been saved as $fileName")
+
+                        //sharedPreferencesに保存する処理
+                        val date = Date()
+                        val dateStr = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(date)
+                        sp.edit().putString(defaultValues.recDateKey + recordID, dateStr).apply()
+                        sp.edit().putString(defaultValues.recFileNameKey + recordID, fileName).apply()
+                        Log.d("HomeFragment", "Image has been saved to sharedPreferences as fileName = $fileName date = ${date.time}" )
+
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -117,6 +130,8 @@ class HomeFragment : Fragment() {
 
         //        AddRecordBtnが押されたときの処理
         addRecordBtn.setOnClickListener {
+            Log.d("HomeFragment", "AddRecordBtn has been clicked")
+
             val recIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "image/*"
@@ -152,11 +167,16 @@ class HomeFragment : Fragment() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
-    //あとで実現する
-    private fun setRecordNumber (sp: SharedPreferences, UrlOfRecordKey :String) {
+    //埋まっていないRecordNumberを返す関数
+    private fun setRecordNumber (sp: SharedPreferences, recordFileNameKey :String) :Int {
+        var recID = 0
         for (recordID in 0..10)
-        if (sp.getInt(UrlOfRecordKey, 0) == 0) {
-
+        if (sp.getString(recordFileNameKey + recordID, "NoData") == "NoData") {
+            break
+        } else {
+            recID++
         }
+        return recID
     }
+
 }

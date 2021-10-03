@@ -13,9 +13,15 @@ class DefaultValues {
     val alarmRepeatDaysKey = "taskRepeat"
     val alarmBooleanKey = "taskState"
 
-    //record機能で保存するファイルの先頭文字列
-    val recFileName = "recordImg"
-    //record機能で保存するファイル名のKey
-    val recordFileNameKey = "recordFileName"
+    //record機能
+    //sharedPreferencesのファイル名
+    val recSpFileName = "savedRecordInAquariumCare"
+
+    //sharedPreferencesのKeyの名前のKey
+    val recFileNameKey = "recordFileName"
+    val recDateKey = "recordDate"
     val recMaxNum = 10
+
+    //保存するファイルの先頭文字列
+    val recFileName = "recordImg"
 }
