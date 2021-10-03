@@ -66,6 +66,8 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //        viewの文字列を取得
             val tskName = addTaskNameEdit.text.toString()
             val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 0
+
+            //入力された値が範囲外のとき
             when {
                 tskName.length >= titleLengthLimit -> {
                     Toast.makeText(applicationContext, R.string.character_limit, Toast.LENGTH_LONG).show()
@@ -86,7 +88,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
                     intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
                     intent.putExtra("RequestCode", requestCode)
-                    intent.putExtra("TaskName", tskName)
                     pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
 
         //              sharedPrefに保存
@@ -107,7 +108,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         //              アラームに使用する定数を用意
                     alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
                     val alarmType = AlarmManager.RTC_WAKEUP
-                    Log.d("AddTaskActivity", "task saved with RequestCode$requestCode")
+                    Log.d("AddTaskActivity", "task saved as $tskName and requestCode is $requestCode")
 
         //              rpCheckBoxが入っていればリピートで設定
                     if (rpCBisChecked) {

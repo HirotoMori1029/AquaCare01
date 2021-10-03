@@ -24,6 +24,9 @@
     <string name="alarm_start">Alarm has been set</string>
     <string name="no_data_str">NoData</string>
 
+    <!-- notification -->
+    <string name="notification_message">There are incomplete tasks</string>
+
     <!-- AddTaskActivity -->
     <string name="add_task_title">AddTask</string>
     <string name="input_name">Task Name</string>

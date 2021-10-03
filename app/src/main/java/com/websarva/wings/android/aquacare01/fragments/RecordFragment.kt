@@ -19,7 +19,6 @@ class Recode : Fragment() {
     private val date = Date().time
     private val defaultValues = DefaultValues()
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

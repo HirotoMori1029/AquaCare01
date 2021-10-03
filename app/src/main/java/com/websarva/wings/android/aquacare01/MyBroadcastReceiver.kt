@@ -29,13 +29,13 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             //        Notificationに関する記述
             val channelId = "default"
             val title= context.getString(R.string.app_name)
-            val aMessage ="$taskName"
+            val aMessage = sharedPref.getString(defaultValues.alarmTaskNameKey + requestCode, context.getString(R.string.notification_message))
             val channel = NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_DEFAULT)
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
 
             val builder = NotificationCompat.Builder(context, channelId)
-            builder.setSmallIcon(android.R.drawable.ic_dialog_info)
+            builder.setSmallIcon(R.mipmap.ic_launcher) //todo 後で修正する
             builder.setContentTitle(title)
             builder.setContentText(aMessage)
             builder.setContentIntent(pendingIntent)
