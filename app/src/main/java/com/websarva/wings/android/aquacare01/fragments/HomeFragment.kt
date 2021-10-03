@@ -64,7 +64,7 @@ class HomeFragment : Fragment() {
                         val inputStream = requireContext().contentResolver.openInputStream(uri)
                         var gotBitmap = BitmapFactory.decodeStream(inputStream)
                         //縦が長ければ回転させる
-                        if (gotBitmap.width <= gotBitmap.height) {
+                        if (gotBitmap.width < gotBitmap.height) {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
                         val sp = requireContext().getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
-                        recordID = setRecordNumber(sp, defaultValues.recFileNameKey)
+                        recordID = setRecordNumber(sp)
                         val fileName = defaultValues.recFileName + recordID +".jpeg"
                         saveImgFromBmp(fileName, resizedBitmap, requireContext())
                         Log.d("HomeFragment", "Image has been saved as $fileName")
@@ -136,7 +136,6 @@ class HomeFragment : Fragment() {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "image/*"
             }
-            val date = Date()
             startForSaveRecordResult.launch(recIntent)
         }
     }
@@ -168,10 +167,10 @@ class HomeFragment : Fragment() {
     }
 
     //埋まっていないRecordNumberを返す関数
-    private fun setRecordNumber (sp: SharedPreferences, recordFileNameKey :String) :Int {
+    private fun setRecordNumber (sp: SharedPreferences) :Int {
         var recID = 0
         for (recordID in 0..10)
-        if (sp.getString(recordFileNameKey + recordID, "NoData") == "NoData") {
+        if (sp.getString(defaultValues.recFileNameKey + recordID, "NoData")?: "NoData" == "NoData") {
             break
         } else {
             recID++
