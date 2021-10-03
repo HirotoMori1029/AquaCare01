@@ -86,7 +86,7 @@ class HomeFragment : Fragment() {
                         val inputStream = requireContext().contentResolver.openInputStream(uri)
                         var gotBitmap = BitmapFactory.decodeStream(inputStream)
                         //縦が長ければ回転させる
-                        if (gotBitmap.width <= gotBitmap.height) {
+                        if (gotBitmap.width < gotBitmap.height) {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
