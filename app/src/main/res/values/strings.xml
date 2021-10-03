@@ -10,10 +10,6 @@
     <string name="display_image">Display Name</string>
     <string name="home_task_button">ADD TASK</string>
     <string name="home_recode_button">ADD RECODE</string>
-    <string-array name="image_selected_option_list">
-        <item>Take Photo</item>
-        <item>Choose Photo</item>
-    </string-array>
     <string name="image_clicked_option_title">ImageClicked!!</string>
     <string name="dialog_msg">Choose an option</string>
     <string name="dialog_cancel">Cancel</string>

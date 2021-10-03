@@ -20,22 +20,21 @@ class MyBroadcastReceiver : BroadcastReceiver() {
         val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
 
         if (intent.action == "com.websarva.wings.android.aquacare01.NOTIFY_ALARM") {
-            val requestCode :Int = intent.getIntExtra("RequestCode", 0)
-            val taskName :String? = intent.getStringExtra("TaskName")
+            val alarmID :Int = intent.getIntExtra("RequestCode", 0)
             val nIntent = Intent(context, MainActivity::class.java)
             val pendingIntent :PendingIntent = PendingIntent.
-                    getActivity(context, requestCode + defaultValues.nfMaxNum, nIntent, PendingIntent.FLAG_IMMUTABLE)
+                    getActivity(context, alarmID + defaultValues.nfMaxNum, nIntent, PendingIntent.FLAG_IMMUTABLE)
 
             //        Notificationに関する記述
             val channelId = "default"
             val title= context.getString(R.string.app_name)
-            val aMessage = sharedPref.getString(defaultValues.alarmTaskNameKey + requestCode, context.getString(R.string.notification_message))
+            val aMessage = sharedPref.getString(defaultValues.alarmTaskNameKey + alarmID, context.getString(R.string.notification_message))
             val channel = NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_DEFAULT)
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
 
             val builder = NotificationCompat.Builder(context, channelId)
-            builder.setSmallIcon(R.mipmap.ic_launcher_foreground) //todo 後で修正する
+            builder.setSmallIcon(R.mipmap.ic_launcher_foreground)
             builder.setContentTitle(title)
             builder.setContentText(aMessage)
             builder.setContentIntent(pendingIntent)
@@ -45,7 +44,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             notificationManager.notify(R.string.app_name, builder.build())
 
 //        タスク状態を保存
-            val key = defaultValues.alarmBooleanKey + requestCode
+            val key = defaultValues.alarmBooleanKey + alarmID
             val taskState = sharedPref.getBoolean(key, false)
             if (taskState) {
                 sharedPref.edit().putBoolean(key, false).apply()
