@@ -65,6 +65,11 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                     val alarmType = AlarmManager.RTC_WAKEUP
                     val alarmNextLong = sharedPref.getLong(NotificationFragment().alarmNextLongKey + alarmID, 0)
                     val calendar = Calendar.getInstance()
+                    //NextTimeがリブートした時間よりも遅かったら、taskStateをfalseにする
+                    if (calendar.time.time >= alarmNextLong) {
+                        sharedPref.edit().putBoolean(NotificationFragment().alarmBooleanKey + alarmID, false).apply()
+                        Log.d("MyBroadcastReceiver", "Task state for alarmID$alarmID has changed to false")
+                    }
                     calendar.time = Date(alarmNextLong)
                     val alarmRepeatDays = sharedPref.getInt(NotificationFragment().alarmRepeatDaysKey + alarmID, 0)
                     if (alarmRepeatDays != 0) {

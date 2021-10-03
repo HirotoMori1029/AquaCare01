@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.websarva.wings.android.aquacare01.fragments.HomeFragment
 
 class RecordAdapter(private val recordList: List<Diary>): RecyclerView.Adapter<RecordAdapter.RecordRecyclerViewHolder>() {
+
+    private val imageLoader = ImageLoader()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordRecyclerViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.record_row, parent, false)
@@ -17,7 +18,8 @@ class RecordAdapter(private val recordList: List<Diary>): RecyclerView.Adapter<R
 
     override fun onBindViewHolder(holder: RecordRecyclerViewHolder, position: Int) {
         val record = recordList[position]
-        holder.image.setImageBitmap(record.bitmap)
+        val bitmap = imageLoader.readImgFromFileName(record.fileName, holder.image.context)
+        holder.image.setImageBitmap(bitmap)
         holder.date.text = record.date
     }
 
@@ -28,3 +30,4 @@ class RecordAdapter(private val recordList: List<Diary>): RecyclerView.Adapter<R
         val image: ImageView = itemView.findViewById(R.id.recordImage)
     }
 }
+

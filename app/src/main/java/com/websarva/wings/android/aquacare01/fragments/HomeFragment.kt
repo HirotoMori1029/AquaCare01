@@ -4,6 +4,7 @@ package com.websarva.wings.android.aquacare01.fragments
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
@@ -19,12 +20,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.websarva.wings.android.aquacare01.AddTaskActivity
 import com.websarva.wings.android.aquacare01.EXTRA_MESSAGE
+import com.websarva.wings.android.aquacare01.ImageLoader
 import com.websarva.wings.android.aquacare01.R
-import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
-import java.io.IOException
 import java.lang.Exception
+import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -42,13 +43,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var recordNumber = 0
+
         //各ビューを取得
         val aqImage = view.findViewById<ImageView>(R.id.aqImage)
         val addAlarmBtn = view.findViewById<Button>(R.id.addAlarmBtn)
         val addRecordBtn = view.findViewById<Button>(R.id.addRecordBtn)
 
         //fileがあればHome画面に表示させる
-        displayBmp = readImgFromFileName(hFileName, requireContext())
+        displayBmp = ImageLoader().readImgFromFileName(hFileName, requireContext())
         if (displayBmp != null) {
             aqImage.setImageBitmap(displayBmp)
         }
@@ -67,7 +70,7 @@ class HomeFragment : Fragment() {
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
                         saveImgFromBmp(hFileName, resizedBitmap, requireContext())
-                        displayBmp = readImgFromFileName(hFileName, requireContext())
+                        displayBmp = ImageLoader().readImgFromFileName(hFileName, requireContext())
                         aqImage.setImageBitmap(displayBmp)
                     }
                 } catch (e: Exception) {
@@ -120,6 +123,7 @@ class HomeFragment : Fragment() {
                 addCategory(Intent.CATEGORY_OPENABLE)
                 type = "image/*"
             }
+            val date = Date()
             startForSaveRecordResult.launch(recIntent)
         }
     }
@@ -137,16 +141,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    fun readImgFromFileName(fileName: String, context: Context): Bitmap? {
-        return try {
-            val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
-            BitmapFactory.decodeStream(bufferedInputStream)
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
-
     private fun resizeBitmap (beforeResizeBmp: Bitmap, imageView: ImageView) :Bitmap {
         val resizeScale = beforeResizeBmp.width.toDouble() / imageView.width.toDouble()
         val resizedWidth = (beforeResizeBmp.width / resizeScale).toInt()
@@ -159,4 +153,11 @@ class HomeFragment : Fragment() {
         matrix.postRotate(-90F)
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
+
+//    //あとで実現する
+//    private fun setRecordNumber (sp: SharedPreferences, numberOfRecordKey :String) {
+//        if (sp.getInt(numberOfRecordKey, 0) == 0) {
+//
+//        }
+//    }
 }

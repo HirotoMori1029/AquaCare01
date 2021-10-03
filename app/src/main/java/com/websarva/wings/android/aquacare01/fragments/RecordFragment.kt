@@ -17,6 +17,7 @@ class Recode : Fragment() {
 
     private val date = Date().time
     val recFileName = "recordImg0.jpeg"
+    val numberOfRecordKey = "NumberOfRecord"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,10 +31,9 @@ class Recode : Fragment() {
 
         val rvRecord: RecyclerView = view.findViewById(R.id.rvRecord)
         val dateStr = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(date)
-        val bitmap1 = HomeFragment().readImgFromFileName(recFileName, requireContext())
 
         val recordList = listOf(
-            Diary(bitmap1, dateStr),
+            Diary(recFileName, dateStr),
         )
 
         rvRecord.adapter = RecordAdapter(recordList)

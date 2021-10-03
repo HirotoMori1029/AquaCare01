@@ -22,6 +22,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
     private val calendar = Calendar.getInstance()
     private val titleLengthLimit = 100
     private val repeatDaysLimit = 365
+    private val notificationFragment = NotificationFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,7 +79,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     val rpCBisChecked = rpCheckBox.isChecked
                     //        sharedPreferencesを準備
                     val sharedPref =
-                        getSharedPreferences(NotificationFragment().taskSaveFileName, Context.MODE_MULTI_PROCESS)
+                        getSharedPreferences(notificationFragment.taskSaveFileName, Context.MODE_MULTI_PROCESS)
         //              すでにIDが存在する場合、+1する
                     requestCode = setReqCode(sharedPref)
 
@@ -91,18 +92,18 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 
         //              sharedPrefに保存
                     savePreferences(
-                        NotificationFragment().alarmTaskNameKey + requestCode,
+                        notificationFragment.alarmTaskNameKey + requestCode,
                         tskName,
                         sharedPref
                     )
                     sharedPref.edit()
-                        .putBoolean(NotificationFragment().alarmBooleanKey + requestCode, true).apply()
+                        .putBoolean(notificationFragment.alarmBooleanKey + requestCode, true).apply()
                     sharedPref.edit().putLong(
-                        NotificationFragment().alarmNextLongKey + requestCode,
+                        notificationFragment.alarmNextLongKey + requestCode,
                         calendar.time.time
                     ).apply()
                     sharedPref.edit()
-                        .putInt(NotificationFragment().alarmRepeatDaysKey + requestCode, rpInt).apply()
+                        .putInt(notificationFragment.alarmRepeatDaysKey + requestCode, rpInt).apply()
 
         //              アラームに使用する定数を用意
                     alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
@@ -164,8 +165,8 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
     private fun setReqCode(sp:SharedPreferences) : Int {
         var reqCode = 0
         var gotDataCheckStr :String?
-        for (i in 0..NotificationFragment().nfMaxNum) {
-            gotDataCheckStr = sp.getString(NotificationFragment().alarmTaskNameKey + i, "noData")
+        for (i in 0..notificationFragment.nfMaxNum) {
+            gotDataCheckStr = sp.getString(notificationFragment.alarmTaskNameKey + i, "noData")
             if (gotDataCheckStr != "noData") {
                 reqCode = i + 1
             } else {
