@@ -24,8 +24,8 @@
     <string name="notification_message">There are incomplete tasks</string>
 
     <!-- AddTaskActivity -->
-    <string name="add_task_title">AddTask</string>
-    <string name="input_name">Task Name</string>
+    <string name="add_task_title">Add task</string>
+    <string name="input_name">Task name</string>
     <string name="input_date">Date</string>
     <string name="input_time">Time</string>
     <string name="save">SAVE</string>

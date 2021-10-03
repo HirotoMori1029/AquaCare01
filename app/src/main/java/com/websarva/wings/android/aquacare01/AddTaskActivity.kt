@@ -27,9 +27,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_task)
 
-        val message = intent.getStringExtra(EXTRA_MESSAGE)
 //        viewを取得
-        val addTaskTitle = findViewById<TextView>(R.id.addTaskTitle)
         val addTaskNameEdit = findViewById<EditText>(R.id.addTaskNameEdit)
         val addTaskDate = findViewById<TextView>(R.id.addTaskDate)
         val addTaskTime = findViewById<TextView>(R.id.addTaskTime)
@@ -42,7 +40,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         val cTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(calendar.time)
 
 //        各ビューにテキストを設定
-        addTaskTitle.text = message
         addTaskDate.text = cDateStr
         addTaskTime.text = cTimeStr
 
