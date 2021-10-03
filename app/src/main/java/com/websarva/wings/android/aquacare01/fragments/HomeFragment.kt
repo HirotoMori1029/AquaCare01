@@ -89,7 +89,7 @@ class HomeFragment : Fragment() {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        saveImgFromBmp(defaultValues.recFileName, resizedBitmap, requireContext())
+                        saveImgFromBmp(defaultValues.recFileName+".jpeg", resizedBitmap, requireContext())
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()

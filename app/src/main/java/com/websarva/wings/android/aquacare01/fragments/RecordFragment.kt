@@ -33,7 +33,7 @@ class Recode : Fragment() {
         val dateStr = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(date)
 
         val recordList = listOf(
-            Diary(defaultValues.recFileName, dateStr),
+            Diary(defaultValues.recFileName+".jpeg", dateStr),
         )
 
         rvRecord.adapter = RecordAdapter(recordList)

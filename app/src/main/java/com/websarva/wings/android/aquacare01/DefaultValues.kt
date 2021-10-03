@@ -13,7 +13,9 @@ class DefaultValues {
     val alarmRepeatDaysKey = "taskRepeat"
     val alarmBooleanKey = "taskState"
 
-    val recFileName = "recordImg.jpeg"
-    val urlOfRecordKey = "urlOfRecord"
+    //record機能で保存するファイルの先頭文字列
+    val recFileName = "recordImg"
+    //record機能で保存するファイル名のKey
+    val recordFileNameKey = "recordFileName"
     val recMaxNum = 10
 }
