@@ -36,10 +36,10 @@ class RecordAdapter(private val recordList: MutableList<Diary>): RecyclerView.Ad
         val recordDeleteBtn: Button = itemView.findViewById(R.id.recodeDeleteBtn)
     }
 
-//todo あとで削除する関数を追加する
-//    fun recDeleteUpdate(index: Int) {
-//        recordList[index].fileName.
-//    }
+    fun recDeleteUpdate(index: Int) {
+        recordList.removeAt(index)
+        notifyDataSetChanged()
+    }
 
     interface Listener {
         fun onClickBtn(index: Int)

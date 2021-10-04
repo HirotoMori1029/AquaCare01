@@ -41,11 +41,12 @@ class Recode : Fragment() {
                 recordList.add(Diary(fileName, date))
             }
         }
-        val adapter = RecordAdapter(recordList) //todo あとでRecordAdapter(recordList.asReversed())にする
+        val adapter = RecordAdapter(recordList)
 
         //adapterのlisterを定義
         adapter.listener = object :RecordAdapter.Listener {
             override fun onClickBtn(index: Int) {
+                adapter.recDeleteUpdate(index)
                 var i = index
                 var j = i + 1
                 sp.edit().remove(defaultValues.recFileNameKey + i).apply()
