@@ -32,16 +32,16 @@ class Recode : Fragment() {
         val rvRecord: RecyclerView = view.findViewById(R.id.rvRecord)
         val sp = requireContext().getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
 
-        //todo whileに書き直せる
-        for (recordID in 0..defaultValues.recMaxNum) {
-            val fileName = sp.getString(defaultValues.recFileNameKey + recordID, "NoData") ?: "NoData"
-            if (fileName == "NoData") {
-                break
-            } else {
-                val date = sp.getString(defaultValues.recDateKey + recordID, "NoData") ?: "NoData"
-                recordList.add(Diary(fileName, date))
-            }
+        var recordID = 0
+        var fileName = sp.getString(defaultValues.recFileNameKey + recordID, "NoData") ?: "NoData"
+        while (fileName != "NoData") {
+            val date = sp.getString(defaultValues.recDateKey + recordID, "NoData") ?: "NoData"
+            recordList.add(Diary(fileName, date))
+            recordID++
+            fileName = sp.getString(defaultValues.recFileNameKey + recordID, "NoData") ?: "NoData"
         }
+
+
         val adapter = RecordAdapter(recordList)
 
         //adapterのlisterを定義
