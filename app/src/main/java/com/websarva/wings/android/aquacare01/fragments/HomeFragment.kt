@@ -170,24 +170,12 @@ class HomeFragment : Fragment() {
     //埋まっていないRecordNumberを返す関数
     private fun setRecordNumber (sp: SharedPreferences) :Int {
         var recID = 0
-        for (recordID in 0..10)
-        if (sp.getString(defaultValues.recFileNameKey + recordID, "NoData")?: "NoData" == "NoData") {
-            break
-        } else {
+        var fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
+        while (fileName != "NoData") {
             recID++
+            fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
         }
         return recID
     }
-
-//todo これに置換する
-//    private fun setRecordNumber (sp: SharedPreferences) :Int {
-//        var recID = 0
-//        var fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
-//        while (fileName != "NoData") {
-//            recID++
-//            fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
-//        }
-//        return recID
-//    }
 
 }
