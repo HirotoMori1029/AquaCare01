@@ -2,6 +2,7 @@ package com.websarva.wings.android.aquacare01.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -40,7 +41,37 @@ class Recode : Fragment() {
                 recordList.add(Diary(fileName, date))
             }
         }
-        rvRecord.adapter = RecordAdapter(recordList.reversed())
+        val adapter = RecordAdapter(recordList) //todo あとでRecordAdapter(recordList.asReversed())にする
+
+        //adapterのlisterを定義
+        adapter.listener = object :RecordAdapter.Listener {
+            override fun onClickBtn(index: Int) {
+                var i = index
+                var j = i + 1
+                sp.edit().remove(defaultValues.recFileNameKey + i).apply()
+                sp.edit().remove(defaultValues.recDateKey + i).apply()
+                Log.d("RecordFragment", "recordID$i has been deleted")
+                var nextFileName = sp.getString(defaultValues.recFileNameKey + j, "NoData")
+                while (nextFileName != "NoData") {
+                    sp.edit().putString(defaultValues.recFileNameKey + i, sp.getString(defaultValues.recFileNameKey + j, "NoData")).apply()
+                    sp.edit().putString(defaultValues.recDateKey + i, sp.getString(defaultValues.recDateKey + j, "NoData")).apply()
+                    i++
+                    j++
+                    nextFileName = sp.getString(defaultValues.recFileNameKey + j, "NoData")
+                    }
+                sp.edit().remove(defaultValues.recFileNameKey + i).apply()
+                sp.edit().remove(defaultValues.recDateKey + i).apply()
+                Log.d("RecordFragment", "recordID$i has been deleted")
+                }
+            }
+
+        rvRecord.adapter = adapter
+        //todo 後で変更する
+//        val layoutManager = LinearLayoutManager(requireContext()).apply {
+//            reverseLayout = true
+//            stackFromEnd = true
+//        }
+
         rvRecord.layoutManager = LinearLayoutManager(requireContext())
     }
 }

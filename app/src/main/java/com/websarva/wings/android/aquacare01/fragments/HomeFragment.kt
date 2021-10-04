@@ -178,4 +178,15 @@ class HomeFragment : Fragment() {
         return recID
     }
 
+//todo これに置換する
+//    private fun setRecordNumber (sp: SharedPreferences) :Int {
+//        var recID = 0
+//        var fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
+//        while (fileName != "NoData") {
+//            recID++
+//            fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
+//        }
+//        return recID
+//    }
+
 }
