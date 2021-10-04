@@ -32,6 +32,7 @@ class Recode : Fragment() {
         val rvRecord: RecyclerView = view.findViewById(R.id.rvRecord)
         val sp = requireContext().getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
 
+        //todo whileに書き直せる
         for (recordID in 0..defaultValues.recMaxNum) {
             val fileName = sp.getString(defaultValues.recFileNameKey + recordID, "NoData") ?: "NoData"
             if (fileName == "NoData") {
@@ -49,9 +50,17 @@ class Recode : Fragment() {
                 adapter.recDeleteUpdate(index)
                 var i = index
                 var j = i + 1
+
+                //ファイルを削除
+                val dFileName = sp.getString(defaultValues.recFileNameKey + i, "NoData")
+                requireContext().deleteFile(dFileName)
+
+                //sharedPreferencesの該当データを削除
                 sp.edit().remove(defaultValues.recFileNameKey + i).apply()
                 sp.edit().remove(defaultValues.recDateKey + i).apply()
                 Log.d("RecordFragment", "recordID$i has been deleted")
+
+                //次のデータが埋まっていれば、今のデータに上書きするのを繰り返す
                 var nextFileName = sp.getString(defaultValues.recFileNameKey + j, "NoData")
                 while (nextFileName != "NoData") {
                     sp.edit().putString(defaultValues.recFileNameKey + i, sp.getString(defaultValues.recFileNameKey + j, "NoData")).apply()
@@ -60,6 +69,8 @@ class Recode : Fragment() {
                     j++
                     nextFileName = sp.getString(defaultValues.recFileNameKey + j, "NoData")
                     }
+
+                //最後の番号のデータを削除する
                 sp.edit().remove(defaultValues.recFileNameKey + i).apply()
                 sp.edit().remove(defaultValues.recDateKey + i).apply()
                 Log.d("RecordFragment", "recordID$i has been deleted")

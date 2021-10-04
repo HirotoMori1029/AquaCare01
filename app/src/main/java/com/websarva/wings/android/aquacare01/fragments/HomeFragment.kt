@@ -32,6 +32,7 @@ class HomeFragment : Fragment() {
     private val hFileName = "aquarium_home.jpeg"
     private var displayBmp: Bitmap? = null
     private var recordID = 0
+    private val imageLoader = ImageLoader()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +51,7 @@ class HomeFragment : Fragment() {
         val addRecordBtn = view.findViewById<Button>(R.id.addRecordBtn)
 
         //fileがあればHome画面に表示させる
-        displayBmp = ImageLoader().readImgFromFileName(hFileName, requireContext())
+        displayBmp = imageLoader.readImgFromFileName(hFileName, requireContext())
         if (displayBmp != null) {
             aqImage.setImageBitmap(displayBmp)
         }
@@ -69,7 +70,7 @@ class HomeFragment : Fragment() {
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
                         saveImgFromBmp(hFileName, resizedBitmap, requireContext())
-                        displayBmp = ImageLoader().readImgFromFileName(hFileName, requireContext())
+                        displayBmp = imageLoader.readImgFromFileName(hFileName, requireContext())
                         aqImage.setImageBitmap(displayBmp)
                     }
                 } catch (e: Exception) {

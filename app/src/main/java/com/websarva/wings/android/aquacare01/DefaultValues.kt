@@ -2,7 +2,7 @@ package com.websarva.wings.android.aquacare01
 
 class DefaultValues {
 
-
+    /*notification機能*/
     val taskSaveFileName = "savedTaskInAquariumCare"
     //    アラーム表示最大数
     val nfMaxNum = 5
@@ -13,7 +13,7 @@ class DefaultValues {
     val alarmRepeatDaysKey = "taskRepeat"
     val alarmBooleanKey = "taskState"
 
-    //record機能
+    /*record機能*/
     //sharedPreferencesのファイル名
     val recSpFileName = "savedRecordInAquariumCare"
 
