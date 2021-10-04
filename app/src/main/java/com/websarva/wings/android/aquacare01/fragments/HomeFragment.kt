@@ -122,10 +122,7 @@ class HomeFragment : Fragment() {
 
 //        AddAlarmBtnが押されたときの処理
         addAlarmBtn.setOnClickListener {
-            val message = "Add Task"
-            val tskIntent = Intent(context, AddTaskActivity::class.java).apply {
-                putExtra(EXTRA_MESSAGE, message)
-            }
+            val tskIntent = Intent(context, AddTaskActivity::class.java)
             startActivity(tskIntent)
         }
 

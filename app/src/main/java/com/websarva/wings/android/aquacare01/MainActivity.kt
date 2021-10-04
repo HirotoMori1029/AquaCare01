@@ -8,9 +8,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
-//    EXTRAMESSAGE_test
-const val EXTRA_MESSAGE ="From main activity"
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -159,6 +159,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         sp.edit().putString(key, saveStr).apply()
     }
 //    現存するrequestCode+1を生成する関数
+    //todo while分で置換できる
     private fun setReqCode(sp:SharedPreferences) : Int {
         var reqCode = 0
         var gotDataCheckStr :String?
