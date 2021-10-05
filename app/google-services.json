@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "783894819866",
+    "project_id": "aquariumcare01",
+    "storage_bucket": "aquariumcare01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783894819866:android:4a1f7a1d912d73bed24da3",
+        "android_client_info": {
+          "package_name": "com.websarva.wings.android.aquacare01"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783894819866-buekg4gdv19d0eet2dhlcaq1iq3j9peu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwDdUImrebK11dom9UV3G_I-5g8h0xXB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783894819866-buekg4gdv19d0eet2dhlcaq1iq3j9peu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

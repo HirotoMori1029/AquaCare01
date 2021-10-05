@@ -23,6 +23,7 @@ import com.websarva.wings.android.aquacare01.*
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.lang.Exception
+import java.lang.RuntimeException
 import java.text.SimpleDateFormat
 import java.util.*
 

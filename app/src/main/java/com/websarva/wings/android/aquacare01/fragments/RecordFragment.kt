@@ -78,12 +78,10 @@ class Recode : Fragment() {
             }
 
         rvRecord.adapter = adapter
-        //todo 後で変更する
-//        val layoutManager = LinearLayoutManager(requireContext()).apply {
-//            reverseLayout = true
-//            stackFromEnd = true
-//        }
-
-        rvRecord.layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext()).apply {
+            reverseLayout = true
+            stackFromEnd = true
+        }
+        rvRecord.layoutManager = layoutManager
     }
 }

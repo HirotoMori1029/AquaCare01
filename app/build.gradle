@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
     id "androidx.navigation.safeargs.kotlin"
 }
+//firebase
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 30
@@ -50,6 +53,11 @@ dependencies {
     //recyclerViewとcardViewに必要
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation "androidx.cardview:cardview:1.0.0"
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:28.4.1')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
