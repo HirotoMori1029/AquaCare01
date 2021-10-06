@@ -77,24 +77,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     val sharedPref = getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
                     requestCode = setReqCode(sharedPref)
                     saveToSharedPref(sharedPref, requestCode, tskName, calendar.time.time, rpInt)
-
-                    val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
-                    intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
-                    intent.putExtra("RequestCode", requestCode)
-                    pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
-
-        //              アラームに使用する定数を用意
-                    alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
-                    val alarmType = AlarmManager.RTC_WAKEUP
-                    Log.d("AddTaskActivity", "task saved as $tskName and requestCode is $requestCode")
-
-        //              rpCheckBoxが入っていればリピートで設定
-
-                    if (alarmManager != null) {
-                        alarmManager?.setExact(alarmType, calendar.timeInMillis, pending)
-    //                トーストで設定されたことを表示する
-                        alarmStartToast()
-                    }
+                    setAlarm(requestCode, calendar.timeInMillis)
                     finish()
                 }
             }
@@ -124,6 +107,19 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         sp.edit().putLong(defaultValues.alarmNextLongKey + requestCode, nextTime).apply()
         sp.edit().putInt(defaultValues.alarmRepeatDaysKey + requestCode, repeatDays).apply()
         Log.d("AddTaskActivity","task saved as $tskName and requestCode is $requestCode")
+    }
+
+    private fun setAlarm (requestCode: Int, fireTime:Long) {
+        val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
+        intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
+        intent.putExtra("RequestCode", requestCode)
+        pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
+        alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
+        if (alarmManager != null) {
+            alarmManager?.setExact(AlarmManager.RTC_WAKEUP, fireTime, pending)
+            //トーストで設定されたことを表示する
+            Toast.makeText(applicationContext, R.string.alarm_start, Toast.LENGTH_SHORT).show()
+        }
     }
 //    alarmセットされたときにトーストする関数
     private fun alarmStartToast () {
