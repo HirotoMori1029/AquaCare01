@@ -74,31 +74,19 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                 }
                 else -> {
                     //        sharedPreferencesを準備
-                    val sharedPref =
-                        getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
-        //              すでにIDが存在する場合、+1する
+                    val sharedPref = getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
                     requestCode = setReqCode(sharedPref)
 
-        //              intentを生成
                     val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
                     intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
                     intent.putExtra("RequestCode", requestCode)
                     pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
 
         //              sharedPrefに保存
-                    savePreferences(
-                        defaultValues.alarmTaskNameKey + requestCode,
-                        tskName,
-                        sharedPref
-                    )
-                    sharedPref.edit()
-                        .putBoolean(defaultValues.alarmBooleanKey + requestCode, true).apply()
-                    sharedPref.edit().putLong(
-                        defaultValues.alarmNextLongKey + requestCode,
-                        calendar.time.time
-                    ).apply()
-                    sharedPref.edit()
-                        .putInt(defaultValues.alarmRepeatDaysKey + requestCode, rpInt).apply()
+                    sharedPref.edit().putString(defaultValues.alarmTaskNameKey + requestCode, tskName).apply()
+                    sharedPref.edit().putBoolean(defaultValues.alarmBooleanKey + requestCode, true).apply()
+                    sharedPref.edit().putLong(defaultValues.alarmNextLongKey + requestCode, calendar.time.time).apply()
+                    sharedPref.edit().putInt(defaultValues.alarmRepeatDaysKey + requestCode, rpInt).apply()
 
         //              アラームに使用する定数を用意
                     alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
@@ -139,12 +127,8 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         Toast.makeText(applicationContext, R.string.alarm_start, Toast.LENGTH_SHORT).show()
     }
 
-//    sharedPrefに保存する関数
-    private fun savePreferences(key :String, saveStr :String, sp: SharedPreferences) {
-        sp.edit().putString(key, saveStr).apply()
-    }
 //    現存するrequestCode+1を生成する関数
-    //todo while分で置換できる
+    //todo while分で置換できる？編集したらクラッシュするようになったため保留する
     private fun setReqCode(sp:SharedPreferences) : Int {
         var reqCode = 0
         var gotDataCheckStr :String?
