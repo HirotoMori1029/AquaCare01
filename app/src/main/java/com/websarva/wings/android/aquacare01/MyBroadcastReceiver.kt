@@ -25,7 +25,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             val pendingIntent :PendingIntent = PendingIntent.
                     getActivity(context, alarmID + defaultValues.nfMaxNum, nIntent, PendingIntent.FLAG_IMMUTABLE)
 
-            //        Notificationに関する記述
+            //Notificationに関する記述
             val channelId = "default"
             val title= context.getString(R.string.app_name)
             val aMessage = sharedPref.getString(defaultValues.alarmTaskNameKey + alarmID, context.getString(R.string.notification_message))
@@ -33,22 +33,25 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
 
-            val builder = NotificationCompat.Builder(context, channelId)
-            builder.setSmallIcon(R.mipmap.ic_launcher_foreground)
-            builder.setContentTitle(title)
-            builder.setContentText(aMessage)
-            builder.setContentIntent(pendingIntent)
-            builder.setWhen(System.currentTimeMillis())
-            builder.setAutoCancel(true)
-//        通知
+            val builder = NotificationCompat.Builder(context, channelId).apply {
+                setSmallIcon(R.mipmap.ic_launcher_foreground)
+                setContentTitle(title)
+                setContentText(aMessage)
+                setContentIntent(pendingIntent)
+                setWhen(System.currentTimeMillis())
+                setAutoCancel(true)
+            }
+
+            //通知
             notificationManager.notify(R.string.app_name, builder.build())
 
-//        タスク状態を保存
+            //タスク状態を保存
             val key = defaultValues.alarmBooleanKey + alarmID
             val taskState = sharedPref.getBoolean(key, false)
             if (taskState) {
                 sharedPref.edit().putBoolean(key, false).apply()
             }
+
         } else if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             //アラームの再設定を行う
             Log.d("MyBroadcastReceiver", "Booted!!")

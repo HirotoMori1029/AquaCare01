@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AquariumCare</string>
+    <string name="app_name">FishCare</string>
     <string name="home">Home</string>
     <string name="recode">Recode</string>
     <string name="notification">Notification</string>
