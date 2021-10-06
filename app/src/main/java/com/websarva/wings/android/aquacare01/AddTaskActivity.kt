@@ -108,24 +108,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     Log.d("AddTaskActivity", "task saved as $tskName and requestCode is $requestCode")
 
         //              rpCheckBoxが入っていればリピートで設定
-                    if (rpCBisChecked) {
-                        if (alarmManager != null) {
-                            alarmManager?.setRepeating(
-                                alarmType,
-                                calendar.timeInMillis,
-                                AlarmManager.INTERVAL_DAY * rpInt,
-                                pending
-                            )
-        //                      トーストで設定されたことを表示する
-                            alarmStartToast()
-                        }
 
-                    } else {
-                        if (alarmManager != null) {
-                            alarmManager?.setExact(alarmType, calendar.timeInMillis, pending)
-        //                トーストで設定されたことを表示する
-                            alarmStartToast()
-                        }
+                    if (alarmManager != null) {
+                        alarmManager?.setExact(alarmType, calendar.timeInMillis, pending)
+    //                トーストで設定されたことを表示する
+                        alarmStartToast()
                     }
                     finish()
                 }
