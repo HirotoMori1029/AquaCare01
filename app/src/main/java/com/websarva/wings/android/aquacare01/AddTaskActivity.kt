@@ -73,8 +73,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     Toast.makeText(applicationContext, R.string.repeat_period_limit, Toast.LENGTH_LONG).show()
                 }
                 else -> {
-        //              チェック状態を取得
-                    val rpCBisChecked = rpCheckBox.isChecked
                     //        sharedPreferencesを準備
                     val sharedPref =
                         getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
