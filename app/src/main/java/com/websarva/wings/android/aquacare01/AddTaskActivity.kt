@@ -76,17 +76,12 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     //        sharedPreferencesを準備
                     val sharedPref = getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
                     requestCode = setReqCode(sharedPref)
+                    saveToSharedPref(sharedPref, requestCode, tskName, calendar.time.time, rpInt)
 
                     val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
                     intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
                     intent.putExtra("RequestCode", requestCode)
                     pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
-
-        //              sharedPrefに保存
-                    sharedPref.edit().putString(defaultValues.alarmTaskNameKey + requestCode, tskName).apply()
-                    sharedPref.edit().putBoolean(defaultValues.alarmBooleanKey + requestCode, true).apply()
-                    sharedPref.edit().putLong(defaultValues.alarmNextLongKey + requestCode, calendar.time.time).apply()
-                    sharedPref.edit().putInt(defaultValues.alarmRepeatDaysKey + requestCode, rpInt).apply()
 
         //              アラームに使用する定数を用意
                     alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
@@ -121,6 +116,14 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
+    }
+
+    private fun saveToSharedPref (sp: SharedPreferences, requestCode: Int, tskName: String, nextTime:Long, repeatDays:Int) {
+        sp.edit().putString(defaultValues.alarmTaskNameKey + requestCode, tskName).apply()
+        sp.edit().putBoolean(defaultValues.alarmBooleanKey + requestCode, true).apply()
+        sp.edit().putLong(defaultValues.alarmNextLongKey + requestCode, nextTime).apply()
+        sp.edit().putInt(defaultValues.alarmRepeatDaysKey + requestCode, repeatDays).apply()
+        Log.d("AddTaskActivity","task saved as $tskName and requestCode is $requestCode")
     }
 //    alarmセットされたときにトーストする関数
     private fun alarmStartToast () {
