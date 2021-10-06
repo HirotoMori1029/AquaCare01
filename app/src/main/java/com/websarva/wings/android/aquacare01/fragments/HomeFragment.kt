@@ -50,9 +50,10 @@ class HomeFragment : Fragment() {
         val aqImage = view.findViewById<ImageView>(R.id.aqImage)
         val addAlarmBtn = view.findViewById<Button>(R.id.addAlarmBtn)
         val addRecordBtn = view.findViewById<Button>(R.id.addRecordBtn)
+        val requireContext = requireContext()
 
         //fileがあればHome画面に表示させる
-        displayBmp = imageLoader.readImgFromFileName(hFileName, requireContext())
+        displayBmp = imageLoader.readImgFromFileName(hFileName, requireContext)
         if (displayBmp != null) {
             aqImage.setImageBitmap(displayBmp)
         }
@@ -63,15 +64,15 @@ class HomeFragment : Fragment() {
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 try {
                     result.data?.data?.also { uri ->
-                        val inputStream = requireContext().contentResolver.openInputStream(uri)
+                        val inputStream = requireContext.contentResolver.openInputStream(uri)
                         var gotBitmap = BitmapFactory.decodeStream(inputStream)
                         //縦が長ければ回転させる
                         if (gotBitmap.width < gotBitmap.height) {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        saveImgFromBmp(hFileName, resizedBitmap, requireContext())
-                        displayBmp = imageLoader.readImgFromFileName(hFileName, requireContext())
+                        saveImgFromBmp(hFileName, resizedBitmap, requireContext)
+                        displayBmp = imageLoader.readImgFromFileName(hFileName, requireContext)
                         aqImage.setImageBitmap(displayBmp)
                     }
                 } catch (e: Exception) {
@@ -85,17 +86,17 @@ class HomeFragment : Fragment() {
             if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 try {
                     result.data?.data?.also { uri ->
-                        val inputStream = requireContext().contentResolver.openInputStream(uri)
+                        val inputStream = requireContext.contentResolver.openInputStream(uri)
                         var gotBitmap = BitmapFactory.decodeStream(inputStream)
                         //縦が長ければ回転させる
                         if (gotBitmap.width < gotBitmap.height) {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        val sp = requireContext().getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
+                        val sp = requireContext.getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
                         recordID = setRecordNumber(sp)
                         val fileName = defaultValues.recFileName + recordID +".jpeg"
-                        saveImgFromBmp(fileName, resizedBitmap, requireContext())
+                        saveImgFromBmp(fileName, resizedBitmap, requireContext)
                         Log.d("HomeFragment", "Image has been saved as $fileName")
 
                         //sharedPreferencesに保存する処理

@@ -127,9 +127,9 @@ class NotificationFragment : Fragment() {
 
     private fun cancelPIntent (index: Int) {
         val alarmMgr =requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(requireContext(), MyBroadcastReceiver::class.java)
+        val intent = Intent(context, MyBroadcastReceiver::class.java)
         intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
-        val pIntent = PendingIntent.getBroadcast(requireContext(), index, intent, PendingIntent.FLAG_IMMUTABLE)
+        val pIntent = PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmMgr.cancel(pIntent)
         Log.d("cancelPIntent", "requestCode is $index")
         pIntent.cancel()

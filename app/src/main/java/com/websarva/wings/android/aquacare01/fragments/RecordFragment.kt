@@ -30,7 +30,8 @@ class Recode : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val rvRecord: RecyclerView = view.findViewById(R.id.rvRecord)
-        val sp = requireContext().getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
+        val requireContext = requireContext()
+        val sp = requireContext.getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
 
         var recordID = 0
         var fileName = sp.getString(defaultValues.recFileNameKey + recordID, "NoData") ?: "NoData"
@@ -53,7 +54,7 @@ class Recode : Fragment() {
 
                 //ファイルを削除
                 val dFileName = sp.getString(defaultValues.recFileNameKey + i, "NoData")
-                requireContext().deleteFile(dFileName)
+                requireContext.deleteFile(dFileName)
 
                 //sharedPreferencesの該当データを削除
                 sp.edit().remove(defaultValues.recFileNameKey + i).apply()
@@ -78,7 +79,7 @@ class Recode : Fragment() {
             }
 
         rvRecord.adapter = adapter
-        val layoutManager = LinearLayoutManager(requireContext()).apply {
+        val layoutManager = LinearLayoutManager(context).apply {
             reverseLayout = true
             stackFromEnd = true
         }
