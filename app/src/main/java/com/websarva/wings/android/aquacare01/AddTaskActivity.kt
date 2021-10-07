@@ -15,13 +15,12 @@ import java.util.*
 class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListener, DatePickerFragment.OnDateSetListener {
 
     //    Notificationに使用する定数を定義
-    private var alarmManager: AlarmManager? = null
-    private var pending: PendingIntent? = null
     private var requestCode = 0
     private val calendar = Calendar.getInstance()
     private val titleLengthLimit = 100
     private val repeatDaysLimit = 365
     private val defaultValues = DefaultValues()
+    private val alarmController = AlarmController()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,12 +48,10 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         }
 
         addTaskDate.setOnClickListener {
-            val fragmentD = DatePickerFragment()
-            fragmentD.show(supportFragmentManager, "datePicker")
+            DatePickerFragment().show(supportFragmentManager, "datePicker")
         }
         addTaskTime.setOnClickListener {
-            val fragmentT = TimePickerFragment()
-            fragmentT.show(supportFragmentManager, "timePicker")
+            TimePickerFragment().show(supportFragmentManager, "timePicker")
         }
 
 //        SAVEボタンを押されたときの処理
@@ -63,8 +60,6 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //        viewの文字列を取得
             val tskName = addTaskNameEdit.text.toString()
             val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 0
-
-            //入力された値が範囲外のとき
             when {
                 tskName.length >= titleLengthLimit -> {
                     Toast.makeText(applicationContext, R.string.character_limit, Toast.LENGTH_LONG).show()
@@ -73,11 +68,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                     Toast.makeText(applicationContext, R.string.repeat_period_limit, Toast.LENGTH_LONG).show()
                 }
                 else -> {
-                    //        sharedPreferencesを準備
                     val sharedPref = getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
                     requestCode = setReqCode(sharedPref)
                     saveToSharedPref(sharedPref, requestCode, tskName, calendar.time.time, rpInt)
-                    setAlarm(requestCode, calendar.timeInMillis)
+                    alarmController.setAlarm(applicationContext, requestCode, calendar.timeInMillis)
+                    Toast.makeText(applicationContext, R.string.alarm_start, Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
@@ -109,35 +104,13 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         Log.d("AddTaskActivity","task saved as $tskName and requestCode is $requestCode")
     }
 
-    private fun setAlarm (requestCode: Int, fireTime:Long) {
-        val intent = Intent(applicationContext, MyBroadcastReceiver::class.java)
-        intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
-        intent.putExtra("RequestCode", requestCode)
-        pending = PendingIntent.getBroadcast(applicationContext, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
-        alarmManager = getSystemService(ALARM_SERVICE) as? AlarmManager
-        if (alarmManager != null) {
-            alarmManager?.setExact(AlarmManager.RTC_WAKEUP, fireTime, pending)
-            //トーストで設定されたことを表示する
-            Toast.makeText(applicationContext, R.string.alarm_start, Toast.LENGTH_SHORT).show()
-        }
-    }
-//    alarmセットされたときにトーストする関数
-    private fun alarmStartToast () {
-        Toast.makeText(applicationContext, R.string.alarm_start, Toast.LENGTH_SHORT).show()
-    }
-
-//    現存するrequestCode+1を生成する関数
-    //todo while分で置換できる？編集したらクラッシュするようになったため保留する
+    //    現存するrequestCode+1を生成する関数
     private fun setReqCode(sp:SharedPreferences) : Int {
         var reqCode = 0
-        var gotDataCheckStr :String?
-        for (i in 0..defaultValues.nfMaxNum) {
-            gotDataCheckStr = sp.getString(defaultValues.alarmTaskNameKey + i, "noData")
-            if (gotDataCheckStr != "noData") {
-                reqCode = i + 1
-            } else {
-                break
-            }
+        var gotDataCheckStr = sp.getString(defaultValues.alarmTaskNameKey + reqCode, null)
+        while (gotDataCheckStr != null) {
+            reqCode++
+            gotDataCheckStr = sp.getString(defaultValues.alarmTaskNameKey + reqCode, null)
         }
         return reqCode
     }

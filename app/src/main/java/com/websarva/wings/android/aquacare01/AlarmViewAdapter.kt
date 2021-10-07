@@ -88,13 +88,13 @@ class AlarmViewAdapter(private var alarmListData: MutableList<Alarm>) :
         notifyItemChanged(index)
     }
 
-    fun stateUpdate (index: Int, nextDateStr: String, nextTimeStr: String, prevDateStr: String, prevTimeStr: String) {
-        alarmListData[index].nextDate = nextDateStr
-        alarmListData[index].nextTime = nextTimeStr
-        alarmListData[index].prevDate = prevDateStr
-        alarmListData[index].prevTime = prevTimeStr
-        alarmListData[index].taskState = true
-        notifyItemChanged(index)
+    fun stateUpdate (updateDate:UpdateDate) {
+        alarmListData[updateDate.index].nextDate = updateDate.nextDateStr
+        alarmListData[updateDate.index].nextTime = updateDate.nextTimeStr
+        alarmListData[updateDate.index].prevDate = updateDate.prevDateStr
+        alarmListData[updateDate.index].prevTime = updateDate.prevTimeStr
+        alarmListData[updateDate.index].taskState = true
+        notifyItemChanged(updateDate.index)
     }
 
     interface Listener {
