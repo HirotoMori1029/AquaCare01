@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 
 class AlarmController {
@@ -15,5 +16,15 @@ class AlarmController {
         val pending = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
         val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as? AlarmManager
         alarmManager?.setExact(AlarmManager.RTC_WAKEUP, fireTime, pending)
+    }
+
+    fun cancelAlarm (context: Context, requestCode: Int) {
+        val alarmMgr =context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, MyBroadcastReceiver::class.java)
+        intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
+        val pIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
+        alarmMgr.cancel(pIntent)
+        pIntent.cancel()
+        Log.d("cancelAlarm", "requestCode is $requestCode")
     }
 }

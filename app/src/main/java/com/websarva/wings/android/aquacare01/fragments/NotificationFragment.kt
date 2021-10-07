@@ -1,12 +1,8 @@
 package com.websarva.wings.android.aquacare01.fragments
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -51,7 +47,7 @@ class NotificationFragment : Fragment() {
         //        click時のListenerを設定
         adapter.listener = object :AlarmViewAdapter.Listener {
             override fun onClickBtn(index: Int) {
-                cancelPIntent(index)
+                alarmController.cancelAlarm(requireContext(), index)
                 removeIndexData(sharedPreferences, index)
                 adapter.deleteUpdate(index)
                 Toast.makeText(context, "alarm ID$index was deleted", Toast.LENGTH_SHORT).show()
@@ -87,8 +83,9 @@ class NotificationFragment : Fragment() {
     private fun createAlarmList(sp: SharedPreferences) :MutableList<Alarm> {
 
         for (i in 0..defaultValues.nfMaxNum) {
-            val name = sp.getString(defaultValues.alarmTaskNameKey + i, "NoData")
+            val name = sp.getString(defaultValues.alarmTaskNameKey + i, null)
             val nextDateLong = sp.getLong(defaultValues.alarmNextLongKey + i, 0)
+//            val nextDate = if (nextDateLong != 0L) {dateSDF.format(nextDateLong)} else { null }
             val nextDate = getDataOrNoData(nextDateLong, "MM / dd")
             val nextTime = getDataOrNoData(nextDateLong, "HH : mm")
             val prevDateLong = sp.getLong(defaultValues.alarmPrevLongKey + i, 0)
@@ -103,8 +100,8 @@ class NotificationFragment : Fragment() {
         return alarmList
     }
 
-    private fun getDataOrNoData (date: Long, format: String) :String {
-        return if (date != 0L) {SimpleDateFormat(format, Locale.getDefault()).format(Date(date))} else {"NoData"}
+    private fun getDataOrNoData (date: Long, pattern: String) :String {
+        return if (date != 0L) {SimpleDateFormat(pattern, Locale.getDefault()).format(Date(date))} else {"NoData"}
     }
 
     private fun removeIndexData (sp: SharedPreferences, index:Int) {
@@ -113,16 +110,6 @@ class NotificationFragment : Fragment() {
         sp.edit().remove(defaultValues.alarmPrevLongKey + index).apply()
         sp.edit().remove(defaultValues.alarmRepeatDaysKey + index).apply()
         sp.edit().remove(defaultValues.alarmBooleanKey + index).apply()
-    }
-
-    private fun cancelPIntent (index: Int) {
-        val alarmMgr =requireActivity().getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val intent = Intent(context, MyBroadcastReceiver::class.java)
-        intent.action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
-        val pIntent = PendingIntent.getBroadcast(context, index, intent, PendingIntent.FLAG_IMMUTABLE)
-        alarmMgr.cancel(pIntent)
-        Log.d("cancelPIntent", "requestCode is $index")
-        pIntent.cancel()
     }
 
     private fun updateAlarmInfo (sp: SharedPreferences, index: Int, rpDays:Int) :UpdateDate {
