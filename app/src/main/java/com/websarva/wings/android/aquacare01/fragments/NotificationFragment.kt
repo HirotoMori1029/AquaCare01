@@ -27,6 +27,8 @@ class NotificationFragment : Fragment() {
     private var alarmList = mutableListOf<Alarm>()
     private val defaultValues = DefaultValues()
     private val alarmController = AlarmController()
+    private val dateSDF = SimpleDateFormat("MM / dd", Locale.getDefault())
+    private val timeSDF = SimpleDateFormat("HH : mm", Locale.getDefault())
 
 
     override fun onCreateView(
@@ -45,6 +47,7 @@ class NotificationFragment : Fragment() {
         alarmList = createAlarmList(sharedPreferences)
         val adapter= AlarmViewAdapter(alarmList)
 
+
         //        click時のListenerを設定
         adapter.listener = object :AlarmViewAdapter.Listener {
             override fun onClickBtn(index: Int) {
@@ -61,10 +64,9 @@ class NotificationFragment : Fragment() {
                     sharedPreferences.edit().putBoolean(defaultValues.alarmBooleanKey + index, true).apply()
                     val rpDays = sharedPreferences.getInt(defaultValues.alarmRepeatDaysKey + index, 0)
                     if (rpDays != 0) {
-                        val updateDate = stringRefresh(sharedPreferences, index, rpDays)
+                        val updateDate = updateAlarmInfo(sharedPreferences, index, rpDays)
                         adapter.stateUpdate(updateDate)
-                        val fireTime = setFireTime(Calendar.getInstance(), updateDate.nCalendar, rpDays)
-                        alarmController.setAlarm(requireContext(), index, fireTime)
+                        alarmController.setAlarm(requireContext(), index, updateDate.fireTime)
                     } else {
                         removeIndexData(sharedPreferences, index)
                         adapter.deleteUpdate(index)
@@ -123,34 +125,24 @@ class NotificationFragment : Fragment() {
         pIntent.cancel()
     }
 
-    private fun stringRefresh (sharedPreferences: SharedPreferences, index: Int, rpDays:Int) :UpdateDate {
+    private fun updateAlarmInfo (sp: SharedPreferences, index: Int, rpDays:Int) :UpdateDate {
 
         //PrevTimeを変更する処理
-        val cal = Calendar.getInstance()
-        sharedPreferences.edit()
-            .putLong(defaultValues.alarmPrevLongKey + index, cal.time.time).apply()
-        val pDate = cal.time
-        val prevDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(pDate)
-        val prevTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(pDate)
+        val pCal = Calendar.getInstance()
+        sp.edit().putLong(defaultValues.alarmPrevLongKey + index, pCal.time.time).apply()
+        val prevDateStr = dateSDF.format(pCal.time)
+        val prevTimeStr = timeSDF.format(pCal.time)
         //NextTimeを変更する処理
-        val nDate = Date(sharedPreferences.getLong(defaultValues.alarmNextLongKey + index, 0))
-        cal.time = nDate
-        cal.add(Calendar.DATE, rpDays)
-        val nDateDisplay = cal.time
-        Log.d("nextDate", "nDate = $nDate, nDateDisplay = $nDateDisplay")
-        sharedPreferences.edit().putLong(defaultValues.alarmNextLongKey + index, nDateDisplay.time).apply()
-        val nextDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(nDateDisplay)
-        val nextTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(nDateDisplay)
+        val nCal = Calendar.getInstance()
+        nCal.time = Date(sp.getLong(defaultValues.alarmNextLongKey + index, 0))
+        while (pCal > nCal) {
+            nCal.add(Calendar.DATE, rpDays)
+        }
+        sp.edit().putLong(defaultValues.alarmNextLongKey + index, nCal.time.time).apply()
+        val nextDateStr = dateSDF.format(nCal.time)
+        val nextTimeStr = timeSDF.format(nCal.time)
 
-        return UpdateDate(index, prevDateStr, prevTimeStr, nextDateStr, nextTimeStr, cal)
+        return UpdateDate(index, prevDateStr, prevTimeStr, nextDateStr, nextTimeStr, nCal.timeInMillis)
     }
-
-    private fun setFireTime (cCalendar: Calendar, nCalendar: Calendar, rpDays:Int) :Long {
-            while (cCalendar.timeInMillis > nCalendar.timeInMillis) {
-                nCalendar.add(Calendar.DATE, rpDays)
-            }
-        return nCalendar.timeInMillis
-    }
-
 
 }
