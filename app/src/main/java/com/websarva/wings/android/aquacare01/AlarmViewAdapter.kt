@@ -33,21 +33,19 @@ class AlarmViewAdapter(private var alarmListData: MutableList<Alarm>) :
             holder.taskTimeNextStr.setTextColor(Color.BLACK)
             holder.taskDeleteBtn.setTextColor(Color.BLACK)
             holder.taskDeleteBtn.isEnabled = true
-        }
-
-        if ((alarm.name != "NoData") && alarm.taskState) {
-            holder.alarmIcon.setImageResource(R.drawable.task_waiting_80px)
-
-        } else if ((alarm.name != "NoData") && !alarm.taskState){
-            holder.alarmIcon.setImageResource(R.drawable.task_remaining_80px)
-
+            if (alarm.taskState) {
+                holder.alarmIcon.setImageResource(R.drawable.task_waiting_80px)
+            } else if (!alarm.taskState) {
+                holder.alarmIcon.setImageResource(R.drawable.task_remaining_80px)
+                holder.alarmIcon.setOnClickListener {
+                    listener?.onClickImage(index)
+                }
+            }
         } else {
             holder.alarmIcon.setImageResource(R.drawable.task_no_data_80px)
         }
 
-        holder.alarmIcon.setOnClickListener {
-            listener?.onClickImage(index)
-        }
+
         holder.taskName.text = alarm.name
         holder.taskDeleteBtn.setOnClickListener {
             listener?.onClickBtn(index)

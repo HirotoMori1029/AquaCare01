@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +24,6 @@ import com.websarva.wings.android.aquacare01.*
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.lang.Exception
-import java.lang.RuntimeException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -131,12 +131,17 @@ class HomeFragment : Fragment() {
         //        AddRecordBtnが押されたときの処理
         addRecordBtn.setOnClickListener {
             Log.d("HomeFragment", "AddRecordBtn has been clicked")
-
-            val recIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "image/*"
+            val rSP = requireContext.getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
+            if (setRecordNumber(rSP) > defaultValues.recMaxNum) {
+                Toast.makeText(context, R.string.record_number_limit, Toast.LENGTH_LONG).show()
+            } else {
+                val recIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                    addCategory(Intent.CATEGORY_OPENABLE)
+                    type = "image/*"
+                }
+                startForSaveRecordResult.launch(recIntent)
             }
-            startForSaveRecordResult.launch(recIntent)
+
         }
     }
 

@@ -9,6 +9,7 @@
     <string name="display_image">Display Name</string>
     <string name="home_alarm_button">ADD ALARM</string>
     <string name="home_record_button">ADD RECORD</string>
+    <string name="record_number_limit">Limit on number of photos</string>
 
     <!-- NotificationFragment-->
     <string name="alarm_list">Alarm list</string>
@@ -27,6 +28,7 @@
     <string name="save">SAVE</string>
     <string name="character_limit">Limit on the number of characters</string>
     <string name="repeat_period_limit">Repeat period must be 365 or less</string>
+    <string name="request_code_limit">Limit on alarm number. Delete another alarm</string>
 
     <!-- RecordFragment -->
     <string name="recode_date"><u>MM/dd/yyyy</u></string>

@@ -1,9 +1,7 @@
 package com.websarva.wings.android.aquacare01
 
-import android.app.AlarmManager
-import android.app.PendingIntent
+
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -60,6 +58,8 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //        viewの文字列を取得
             val tskName = addTaskNameEdit.text.toString()
             val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 0
+            val sp = getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
+            requestCode = setReqCode(sp)
             when {
                 tskName.length >= titleLengthLimit -> {
                     Toast.makeText(applicationContext, R.string.character_limit, Toast.LENGTH_LONG).show()
@@ -67,10 +67,11 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                 rpInt >= repeatDaysLimit -> {
                     Toast.makeText(applicationContext, R.string.repeat_period_limit, Toast.LENGTH_LONG).show()
                 }
+                requestCode > defaultValues.nfMaxNum -> {
+                    Toast.makeText(applicationContext, R.string.request_code_limit, Toast.LENGTH_LONG).show()
+                }
                 else -> {
-                    val sharedPref = getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
-                    requestCode = setReqCode(sharedPref)
-                    saveToSharedPref(sharedPref, requestCode, tskName, calendar.time.time, rpInt)
+                    saveToSharedPref(sp, requestCode, tskName, calendar.time.time, rpInt)
                     alarmController.setAlarm(applicationContext, requestCode, calendar.timeInMillis)
                     Toast.makeText(applicationContext, R.string.alarm_start, Toast.LENGTH_SHORT).show()
                     finish()

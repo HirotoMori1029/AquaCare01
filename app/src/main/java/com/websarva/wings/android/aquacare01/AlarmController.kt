@@ -16,6 +16,7 @@ class AlarmController {
         val pending = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
         val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as? AlarmManager
         alarmManager?.setExact(AlarmManager.RTC_WAKEUP, fireTime, pending)
+        Log.d("setAlarm", "requestCode is $requestCode")
     }
 
     fun cancelAlarm (context: Context, requestCode: Int) {

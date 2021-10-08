@@ -3,6 +3,7 @@ package com.websarva.wings.android.aquacare01.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,8 +24,8 @@ class NotificationFragment : Fragment() {
     private var alarmList = mutableListOf<Alarm>()
     private val defaultValues = DefaultValues()
     private val alarmController = AlarmController()
-    private val dateSDF = SimpleDateFormat("MM / dd", Locale.getDefault())
-    private val timeSDF = SimpleDateFormat("HH : mm", Locale.getDefault())
+    private val dateSDF = SimpleDateFormat(defaultValues.datePtn, Locale.getDefault())
+    private val timeSDF = SimpleDateFormat(defaultValues.timePtn, Locale.getDefault())
 
 
     override fun onCreateView(
@@ -55,7 +56,7 @@ class NotificationFragment : Fragment() {
 
             override fun onClickImage(index: Int) {
 //                アイコンを変更する処理
-                val taskState = sharedPreferences.getBoolean(defaultValues.alarmBooleanKey + index, true)
+                val taskState = sharedPreferences.getBoolean(defaultValues.alarmBooleanKey + index, false)
                 if (!taskState) {
                     sharedPreferences.edit().putBoolean(defaultValues.alarmBooleanKey + index, true).apply()
                     val rpDays = sharedPreferences.getInt(defaultValues.alarmRepeatDaysKey + index, 0)
@@ -83,14 +84,13 @@ class NotificationFragment : Fragment() {
     private fun createAlarmList(sp: SharedPreferences) :MutableList<Alarm> {
 
         for (i in 0..defaultValues.nfMaxNum) {
-            val name = sp.getString(defaultValues.alarmTaskNameKey + i, null)
-            val nextDateLong = sp.getLong(defaultValues.alarmNextLongKey + i, 0)
-//            val nextDate = if (nextDateLong != 0L) {dateSDF.format(nextDateLong)} else { null }
-            val nextDate = getDataOrNoData(nextDateLong, "MM / dd")
-            val nextTime = getDataOrNoData(nextDateLong, "HH : mm")
-            val prevDateLong = sp.getLong(defaultValues.alarmPrevLongKey + i, 0)
-            val prevDate = getDataOrNoData(prevDateLong, "MM / dd")
-            val prevTime = getDataOrNoData(prevDateLong, "HH : mm")
+            val name = sp.getString(defaultValues.alarmTaskNameKey + i, getString(R.string.no_data_str))
+            val lNextDate = sp.getLong(defaultValues.alarmNextLongKey + i, 0)
+            val nextDate = getStrFromDate(lNextDate, dateSDF)
+            val nextTime = getStrFromDate(lNextDate, timeSDF)
+            val lPrevDate = sp.getLong(defaultValues.alarmPrevLongKey + i, 0)
+            val prevDate = getStrFromDate(lPrevDate, dateSDF)
+            val prevTime = getStrFromDate(lPrevDate,timeSDF)
             val repeatDays = sp.getInt(defaultValues.alarmRepeatDaysKey + i, 0)
             val repeatDaysStr = if (repeatDays == 0) {"NoRepeat"} else {"Repeat $repeatDays days"}
             val taskState = sp.getBoolean(defaultValues.alarmBooleanKey + i, false)
@@ -100,8 +100,8 @@ class NotificationFragment : Fragment() {
         return alarmList
     }
 
-    private fun getDataOrNoData (date: Long, pattern: String) :String {
-        return if (date != 0L) {SimpleDateFormat(pattern, Locale.getDefault()).format(Date(date))} else {"NoData"}
+    private fun getStrFromDate (date: Long, sdf:SimpleDateFormat) :String {
+        return if (date != 0L) {sdf.format(Date(date))} else {getString(R.string.no_data_str)}
     }
 
     private fun removeIndexData (sp: SharedPreferences, index:Int) {

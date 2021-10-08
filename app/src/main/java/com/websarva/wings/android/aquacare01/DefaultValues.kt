@@ -2,6 +2,10 @@ package com.websarva.wings.android.aquacare01
 
 class DefaultValues {
 
+    /*common*/
+    val datePtn = "MM / dd"
+    val timePtn = "HH : mm"
+
     /*notification機能*/
     val taskSaveFileName = "savedTaskInAquariumCare"
     //    アラーム表示最大数
@@ -20,8 +24,9 @@ class DefaultValues {
     //sharedPreferencesのKeyの名前のKey
     val recFileNameKey = "recordFileName"
     val recDateKey = "recordDate"
-    val recMaxNum = 10
+    //画像の最大表示枚数
+    val recMaxNum = 20
 
-    //保存するファイルの先頭文字列
+    //record機能で保存するファイルの先頭文字列
     val recFileName = "recordImg"
 }
