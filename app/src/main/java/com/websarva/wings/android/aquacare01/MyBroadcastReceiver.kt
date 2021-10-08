@@ -41,7 +41,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
     private fun setNotification (context: Context, sp: SharedPreferences, alarmID: Int, pIntent: PendingIntent) {
         //Notificationに関する記述
         val channelId = "default"
-        val title= context.getString(R.string.app_name)
+        val title= context.getString(R.string.notification_title)
         val aMessage = sp.getString(defaultValues.alarmTaskNameKey + alarmID, context.getString(R.string.notification_message))
         val channel = NotificationChannel(channelId, title, NotificationManager.IMPORTANCE_DEFAULT)
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

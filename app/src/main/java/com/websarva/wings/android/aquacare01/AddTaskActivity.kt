@@ -32,11 +32,9 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
         val rpCheckBox = findViewById<CheckBox>(R.id.rpCheckBox)
         val addTaskRepeatInt = findViewById<EditText>(R.id.addTaskRepeatInt)
 
-//        初期表示に使う現在時刻を文字列で取得する
+//      textViewに初期値を表示
         val cDateStr = SimpleDateFormat("MM / dd", Locale.getDefault()).format(calendar.time)
         val cTimeStr = SimpleDateFormat("HH : mm", Locale.getDefault()).format(calendar.time)
-
-//        各ビューにテキストを設定
         addTaskDate.text = cDateStr
         addTaskTime.text = cTimeStr
 

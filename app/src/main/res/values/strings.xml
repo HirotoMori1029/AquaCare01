@@ -18,6 +18,7 @@
     <string name="no_data_str">NoData</string>
 
     <!-- notification -->
+    <string name="notification_title">Remaining task</string>
     <string name="notification_message">There are incomplete tasks</string>
 
     <!-- AddTaskActivity -->
