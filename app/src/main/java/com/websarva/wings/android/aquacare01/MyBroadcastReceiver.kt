@@ -70,6 +70,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             while (calendar.time.time > nxtAlarmDate) {
                 calendar.add(Calendar.DATE, rpDays)
             }
+            sp.edit().putLong(defaultValues.alarmNextLongKey + almID, calendar.time.time).apply()
             val almIntent = Intent(context, MyBroadcastReceiver::class.java).apply {
                 action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
                 putExtra("RequestCode", almID)
