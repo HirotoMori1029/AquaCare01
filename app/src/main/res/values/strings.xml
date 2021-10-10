@@ -24,8 +24,14 @@
     <!-- AddTaskActivity -->
     <string name="add_task_title">Add task</string>
     <string name="input_name">Task name</string>
+    <string name="change_water">ex. change water</string>
     <string name="input_date">Date</string>
+    <string name="def_format_date">yyyy / MM / dd</string>
     <string name="input_time">Time</string>
+    <string name="def_format_time">HH : mm</string>
+    <string name="repeat">Repeat</string>
+    <string name="repeat_period">ex.7</string>
+    <string name="repeat_days_str">days</string>
     <string name="save">SAVE</string>
     <string name="character_limit">Limit on the number of characters</string>
     <string name="repeat_period_limit">Repeat period must be 365 or less</string>
