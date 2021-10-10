@@ -15,7 +15,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
     //    Notificationに使用する定数を定義
     private var requestCode = 0
     private val calendar = Calendar.getInstance()
-    private val titleLengthLimit = 100
+    private val titleLengthLimit = 42
     private val repeatDaysLimit = 365
     private val defaultValues = DefaultValues()
     private val alarmController = AlarmController()

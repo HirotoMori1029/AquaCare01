@@ -31,8 +31,14 @@
         android:text="default"
         android:textStyle="bold"
         android:textSize="20sp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/alarmIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/taskNextStr"/>
 
     <TextView
         android:id="@+id/taskNextStr"
@@ -143,7 +149,7 @@
         android:layout_marginTop="8dp"
         android:includeFontPadding="false"
         android:text="No data of repeat"
-        android:textSize="10sp"
+        android:textSize="11sp"
         android:layout_marginEnd="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
