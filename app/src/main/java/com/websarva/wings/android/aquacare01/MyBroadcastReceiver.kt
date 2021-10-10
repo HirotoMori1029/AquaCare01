@@ -17,6 +17,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
     
     private val defaultValues = DefaultValues()
 
+    @Suppress("DEPRECATION")
     override fun onReceive(context: Context, intent: Intent) {
         val sharedPref = context.getSharedPreferences("savedTaskInAquariumCare", Context.MODE_MULTI_PROCESS)
 
