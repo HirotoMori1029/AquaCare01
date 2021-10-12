@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recordDate"
         app:layout_constraintDimensionRatio="16:9"
-        android:contentDescription="recodeImage"/>
+        android:contentDescription="@string/record_image"/>
 
     <Button
         android:id="@+id/recodeDeleteBtn"
@@ -54,7 +54,7 @@
         android:backgroundTint="#aaaaaa"
         android:minWidth="0dp"
         android:minHeight="0dp"
-        android:text="DELETE"
+        android:text="@string/delete"
         android:textColor="@color/white"
         android:textSize="12sp"
         android:layout_marginTop="8dp"
