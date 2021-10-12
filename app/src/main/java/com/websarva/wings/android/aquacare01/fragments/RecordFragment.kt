@@ -9,14 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.websarva.wings.android.aquacare01.DefaultValues
-import com.websarva.wings.android.aquacare01.Diary
-import com.websarva.wings.android.aquacare01.R
-import com.websarva.wings.android.aquacare01.RecordAdapter
+import com.websarva.wings.android.aquacare01.*
 
 class Recode : Fragment() {
 
-    private val defaultValues = DefaultValues()
+    private val defVal = DefaultValues()
     private val recordList = mutableListOf<Diary>()
 
     override fun onCreateView(
@@ -31,15 +28,15 @@ class Recode : Fragment() {
 
         val rvRecord: RecyclerView = view.findViewById(R.id.rvRecord)
         val requireContext = requireContext()
-        val sp = requireContext.getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
+        val sp = requireContext.getSharedPreferences(defVal.recSpFileName, Context.MODE_PRIVATE)
 
         var recordID = 0
-        var fileName = sp.getString(defaultValues.recFileNameKey + recordID, "NoData") ?: "NoData"
+        var fileName = sp.getString(defVal.recFileNameKey + recordID, "NoData") ?: "NoData"
         while (fileName != "NoData") {
-            val date = sp.getString(defaultValues.recDateKey + recordID, "NoData") ?: "NoData"
+            val date = sp.getString(defVal.recDateKey + recordID, "NoData") ?: "NoData"
             recordList.add(Diary(fileName, date))
             recordID++
-            fileName = sp.getString(defaultValues.recFileNameKey + recordID, "NoData") ?: "NoData"
+            fileName = sp.getString(defVal.recFileNameKey + recordID, "NoData") ?: "NoData"
         }
 
 
@@ -53,27 +50,27 @@ class Recode : Fragment() {
                 var j = i + 1
 
                 //ファイルを削除
-                val dFileName = sp.getString(defaultValues.recFileNameKey + i, "NoData")
+                val dFileName = sp.getString(defVal.recFileNameKey + i, "NoData")
                 requireContext.deleteFile(dFileName)
 
                 //sharedPreferencesの該当データを削除
-                sp.edit().remove(defaultValues.recFileNameKey + i).apply()
-                sp.edit().remove(defaultValues.recDateKey + i).apply()
+                sp.edit().remove(defVal.recFileNameKey + i).apply()
+                sp.edit().remove(defVal.recDateKey + i).apply()
                 Log.d("RecordFragment", "recordID$i has been deleted")
 
                 //次のデータが埋まっていれば、今のデータに上書きするのを繰り返す
-                var nextFileName = sp.getString(defaultValues.recFileNameKey + j, "NoData")
+                var nextFileName = sp.getString(defVal.recFileNameKey + j, "NoData")
                 while (nextFileName != "NoData") {
-                    sp.edit().putString(defaultValues.recFileNameKey + i, sp.getString(defaultValues.recFileNameKey + j, "NoData")).apply()
-                    sp.edit().putString(defaultValues.recDateKey + i, sp.getString(defaultValues.recDateKey + j, "NoData")).apply()
+                    sp.edit().putString(defVal.recFileNameKey + i, sp.getString(defVal.recFileNameKey + j, "NoData")).apply()
+                    sp.edit().putString(defVal.recDateKey + i, sp.getString(defVal.recDateKey + j, "NoData")).apply()
                     i++
                     j++
-                    nextFileName = sp.getString(defaultValues.recFileNameKey + j, "NoData")
+                    nextFileName = sp.getString(defVal.recFileNameKey + j, "NoData")
                     }
 
                 //最後の番号のデータを削除する
-                sp.edit().remove(defaultValues.recFileNameKey + i).apply()
-                sp.edit().remove(defaultValues.recDateKey + i).apply()
+                sp.edit().remove(defVal.recFileNameKey + i).apply()
+                sp.edit().remove(defVal.recDateKey + i).apply()
                 Log.d("RecordFragment", "recordID$i has been deleted")
                 }
             }

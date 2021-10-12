@@ -17,7 +17,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
     private val calendar = Calendar.getInstance()
     private val titleLengthLimit = 42
     private val repeatDaysLimit = 365
-    private val defaultValues = DefaultValues()
+    private val defVal = DefaultValues()
     private val alarmController = AlarmController()
 
     @Suppress("DEPRECATION")
@@ -57,7 +57,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
 //        viewの文字列を取得
             val tskName = addTaskNameEdit.text.toString()
             val rpInt = addTaskRepeatInt.text.toString().toIntOrNull() ?: 0
-            val sp = getSharedPreferences(defaultValues.taskSaveFileName, Context.MODE_MULTI_PROCESS)
+            val sp = getSharedPreferences(defVal.taskSaveFileName, Context.MODE_MULTI_PROCESS)
             requestCode = setReqCode(sp)
             when {
                 tskName.length >= titleLengthLimit -> {
@@ -66,7 +66,7 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                 rpInt >= repeatDaysLimit -> {
                     Toast.makeText(applicationContext, R.string.repeat_period_limit, Toast.LENGTH_LONG).show()
                 }
-                requestCode > defaultValues.nfMaxNum -> {
+                requestCode > defVal.nfMaxNum -> {
                     Toast.makeText(applicationContext, R.string.request_code_limit, Toast.LENGTH_LONG).show()
                 }
                 else -> {
@@ -97,20 +97,20 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
     }
 
     private fun saveToSharedPref (sp: SharedPreferences, requestCode: Int, tskName: String, nextTime:Long, repeatDays:Int) {
-        sp.edit().putString(defaultValues.alarmTaskNameKey + requestCode, tskName).apply()
-        sp.edit().putBoolean(defaultValues.alarmBooleanKey + requestCode, true).apply()
-        sp.edit().putLong(defaultValues.alarmNextLongKey + requestCode, nextTime).apply()
-        sp.edit().putInt(defaultValues.alarmRepeatDaysKey + requestCode, repeatDays).apply()
+        sp.edit().putString(defVal.alarmTaskNameKey + requestCode, tskName).apply()
+        sp.edit().putBoolean(defVal.alarmBooleanKey + requestCode, true).apply()
+        sp.edit().putLong(defVal.alarmNextLongKey + requestCode, nextTime).apply()
+        sp.edit().putInt(defVal.alarmRepeatDaysKey + requestCode, repeatDays).apply()
         Log.d("AddTaskActivity","task saved as $tskName and requestCode is $requestCode")
     }
 
     //    現存するrequestCode+1を生成する関数
     private fun setReqCode(sp:SharedPreferences) : Int {
         var reqCode = 0
-        var gotDataCheckStr = sp.getString(defaultValues.alarmTaskNameKey + reqCode, null)
+        var gotDataCheckStr = sp.getString(defVal.alarmTaskNameKey + reqCode, null)
         while (gotDataCheckStr != null) {
             reqCode++
-            gotDataCheckStr = sp.getString(defaultValues.alarmTaskNameKey + reqCode, null)
+            gotDataCheckStr = sp.getString(defVal.alarmTaskNameKey + reqCode, null)
         }
         return reqCode
     }

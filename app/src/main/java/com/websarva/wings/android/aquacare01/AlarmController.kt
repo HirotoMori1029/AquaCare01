@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AlarmController {
 
@@ -16,7 +18,8 @@ class AlarmController {
         val pending = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
         val alarmManager = context.getSystemService(AppCompatActivity.ALARM_SERVICE) as? AlarmManager
         alarmManager?.setExact(AlarmManager.RTC_WAKEUP, fireTime, pending)
-        Log.d("setAlarm", "requestCode is $requestCode")
+        Log.d("setAlarm", "Alarm has been set as requestCode$requestCode")
+
     }
 
     fun cancelAlarm (context: Context, requestCode: Int) {
@@ -26,6 +29,6 @@ class AlarmController {
         val pIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_IMMUTABLE)
         alarmMgr.cancel(pIntent)
         pIntent.cancel()
-        Log.d("cancelAlarm", "requestCode is $requestCode")
+        Log.d("cancelAlarm", "Alarm has been canceled, requestCode=$requestCode")
     }
 }

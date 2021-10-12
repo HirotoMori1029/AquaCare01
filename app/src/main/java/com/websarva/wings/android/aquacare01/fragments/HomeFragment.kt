@@ -29,7 +29,7 @@ import java.util.*
 
 class HomeFragment : Fragment() {
 
-    private val defaultValues = DefaultValues()
+    private val defVal = DefaultValues()
     private val hFileName = "aquarium_home.jpeg"
     private var displayBmp: Bitmap? = null
     private var recordID = 0
@@ -93,17 +93,17 @@ class HomeFragment : Fragment() {
                             gotBitmap = rotateBitmap(gotBitmap)
                         }
                         val resizedBitmap = resizeBitmap(gotBitmap, aqImage)
-                        val sp = requireContext.getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
+                        val sp = requireContext.getSharedPreferences(defVal.recSpFileName, Context.MODE_PRIVATE)
                         recordID = setRecordNumber(sp)
-                        val fileName = defaultValues.recFileName + recordID +".jpeg"
+                        val fileName = defVal.recFileName + recordID +".jpeg"
                         saveImgFromBmp(fileName, resizedBitmap, requireContext)
                         Log.d("HomeFragment", "Image has been saved as $fileName")
 
                         //sharedPreferencesに保存する処理
                         val date = Date()
                         val dateStr = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(date)
-                        sp.edit().putString(defaultValues.recDateKey + recordID, dateStr).apply()
-                        sp.edit().putString(defaultValues.recFileNameKey + recordID, fileName).apply()
+                        sp.edit().putString(defVal.recDateKey + recordID, dateStr).apply()
+                        sp.edit().putString(defVal.recFileNameKey + recordID, fileName).apply()
                         Log.d("HomeFragment", "Image has been saved to sharedPreferences as fileName = $fileName date = ${date.time}" )
 
                     }
@@ -131,8 +131,8 @@ class HomeFragment : Fragment() {
         //        AddRecordBtnが押されたときの処理
         addRecordBtn.setOnClickListener {
             Log.d("HomeFragment", "AddRecordBtn has been clicked")
-            val rSP = requireContext.getSharedPreferences(defaultValues.recSpFileName, Context.MODE_PRIVATE)
-            if (setRecordNumber(rSP) > defaultValues.recMaxNum) {
+            val rSP = requireContext.getSharedPreferences(defVal.recSpFileName, Context.MODE_PRIVATE)
+            if (setRecordNumber(rSP) > defVal.recMaxNum) {
                 Toast.makeText(context, R.string.record_number_limit, Toast.LENGTH_LONG).show()
             } else {
                 val recIntent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
@@ -174,10 +174,10 @@ class HomeFragment : Fragment() {
     //埋まっていないRecordNumberを返す関数
     private fun setRecordNumber (sp: SharedPreferences) :Int {
         var recID = 0
-        var fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
+        var fileName = sp.getString(defVal.recFileNameKey + recID, "NoData")?: "NoData"
         while (fileName != "NoData") {
             recID++
-            fileName = sp.getString(defaultValues.recFileNameKey + recID, "NoData")?: "NoData"
+            fileName = sp.getString(defVal.recFileNameKey + recID, "NoData")?: "NoData"
         }
         return recID
     }
