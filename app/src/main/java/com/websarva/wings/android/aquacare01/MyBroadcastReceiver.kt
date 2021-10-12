@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import java.text.SimpleDateFormat
 import java.util.*
 
 

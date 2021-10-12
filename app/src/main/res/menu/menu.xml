@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Home"
+        android:title="@string/home"
         android:id="@+id/homeFragment"
         android:icon="@drawable/ic_baseline_home_24"/>
     <item
-        android:title="Record"
+        android:title="@string/record"
         android:id="@+id/recode"
         android:icon="@drawable/ic_baseline_recode_24"/>
 
     <item
-        android:title="Notification"
+        android:title="@string/notification"
         android:id="@+id/notificationFragment"
         android:icon="@drawable/ic_baseline_notifications_none_24"/>
 

@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">FishCare</string>
     <string name="home">Home</string>
-    <string name="recode">Recode</string>
+    <string name="record">Record</string>
     <string name="notification">Notification</string>
-    <string name="settings">Settings</string>
 
     <!-- HomeFragment-->
     <string name="display_image">Display Name</string>
@@ -13,7 +12,6 @@
 
     <!-- NotificationFragment-->
     <string name="alarm_list">Alarm list</string>
-    <string name="notification_channel_name">aquarium task</string>
     <string name="alarm_start">Alarm has been set</string>
     <string name="no_data_str">NoData</string>
 
