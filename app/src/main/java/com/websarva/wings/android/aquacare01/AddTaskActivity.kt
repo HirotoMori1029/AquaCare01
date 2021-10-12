@@ -69,6 +69,10 @@ class AddTaskActivity : AppCompatActivity(), TimePickerFragment.OnTimeSetListene
                 requestCode > defVal.nfMaxNum -> {
                     Toast.makeText(applicationContext, R.string.request_code_limit, Toast.LENGTH_LONG).show()
                 }
+                //todo メンタへ質問済み。修正の可能性あり
+                calendar.timeInMillis < System.currentTimeMillis() -> {
+                    Toast.makeText(applicationContext, R.string.pick_future_msg, Toast.LENGTH_LONG).show()
+                }
                 else -> {
                     saveToSharedPref(sp, requestCode, tskName, calendar.time.time, rpInt)
                     alarmController.setAlarm(applicationContext, requestCode, calendar.timeInMillis)

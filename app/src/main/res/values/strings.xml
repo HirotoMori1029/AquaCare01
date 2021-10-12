@@ -34,6 +34,7 @@
     <string name="character_limit">Limit on the number of characters</string>
     <string name="repeat_period_limit">Repeat period must be 365 or less</string>
     <string name="request_code_limit">Limit on alarm number. Delete another alarm</string>
+    <string name="pick_future_msg">Pick a date in the future</string>
     <!-- notificationRow -->
     <string name="task_state_Icon">taskStateIcon</string>
     <string name="default_str">default</string>
