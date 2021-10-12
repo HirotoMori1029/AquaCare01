@@ -20,8 +20,8 @@
     <string name="notification_message">There are incomplete tasks</string>
 
     <!-- AddTaskActivity -->
-    <string name="add_task_title">Add task</string>
-    <string name="input_name">Task name</string>
+    <string name="add_task_title">Add Alarm</string>
+    <string name="input_name">Alarm name</string>
     <string name="change_water">ex. change water</string>
     <string name="input_date">Date</string>
     <string name="def_format_date">yyyy / MM / dd</string>

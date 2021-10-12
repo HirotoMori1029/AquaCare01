@@ -3,6 +3,7 @@ package com.websarva.wings.android.aquacare01.fragments
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,7 +51,6 @@ class NotificationFragment : Fragment() {
                 alarmController.cancelAlarm(requireContext(), index)
                 removeIndexData(sharedPreferences, index)
                 adapter.deleteUpdate(index)
-                Toast.makeText(context, "alarm ID$index was deleted", Toast.LENGTH_SHORT).show()
             }
 
             override fun onClickImage(index: Int) {
