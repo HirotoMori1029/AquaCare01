@@ -1,5 +1,6 @@
 package com.websarva.wings.android.aquacare01
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +37,7 @@ class RecordAdapter(private val recordList: MutableList<Diary>): RecyclerView.Ad
         val recordDeleteBtn: Button = itemView.findViewById(R.id.recodeDeleteBtn)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun recDeleteUpdate(index: Int) {
         recordList.removeAt(index)
         notifyDataSetChanged()
