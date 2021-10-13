@@ -101,10 +101,10 @@ class HomeFragment : Fragment() {
 
                         //sharedPreferencesに保存する処理
                         val date = Date()
-                        val dateStr = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(date)
+                        val dateStr = SimpleDateFormat(getString(R.string.record_date), Locale.getDefault()).format(date)
                         sp.edit().putString(defVal.recDateKey + recordID, dateStr).apply()
                         sp.edit().putString(defVal.recFileNameKey + recordID, fileName).apply()
-                        Log.d("HomeFragment", "Image has been saved to sharedPreferences as fileName = $fileName date = ${date.time}" )
+                        Log.d("HomeFragment", "Image has been saved to sharedPreferences as fileName = $fileName date = $dateStr")
 
                     }
                 } catch (e: Exception) {

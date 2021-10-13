@@ -48,7 +48,7 @@
     <string name="delete">DELETE</string>
 
     <!-- RecordFragment -->
-    <string name="recode_date"><u>MM/dd/yyyy</u></string>
+    <string name="record_date"><u>yyyy/MM/dd</u></string>
     <string name="photo_list">Photo list</string>
     <string name="record_image">record image</string>
 </resources>
