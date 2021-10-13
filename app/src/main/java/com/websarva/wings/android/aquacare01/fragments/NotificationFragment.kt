@@ -14,8 +14,6 @@ import com.websarva.wings.android.aquacare01.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-//todo: sharedPreferences変更の可能性あり
-
 class NotificationFragment : Fragment() {
 
     private var lvAlarm: RecyclerView? = null
