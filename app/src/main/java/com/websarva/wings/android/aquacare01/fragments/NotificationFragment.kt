@@ -46,7 +46,7 @@ class NotificationFragment : Fragment() {
             override fun onClickBtn(index: Int) {
                 alarmController.cancelAlarm(requireContext(), index)
                 removeIndexData(sharedPreferences, index)
-                adapter.deleteUpdate(index)
+                adapter.deleteUpdate(index, getString(R.string.no_data_str))
             }
 
             override fun onClickImage(index: Int) {
@@ -61,7 +61,7 @@ class NotificationFragment : Fragment() {
                         alarmController.setAlarm(requireContext(), index, updateDate.fireTime)
                     } else {
                         removeIndexData(sharedPreferences, index)
-                        adapter.deleteUpdate(index)
+                        adapter.deleteUpdate(index, getString(R.string.no_data_str))
                     }
 
                 }
@@ -87,7 +87,7 @@ class NotificationFragment : Fragment() {
             val prevDate = getStrFromDate(lPrevDate, dateSDF)
             val prevTime = getStrFromDate(lPrevDate,timeSDF)
             val repeatDays = sp.getInt(defVal.alarmRepeatDaysKey + i, 0)
-            val repeatDaysStr = if (repeatDays == 0) {"NoRepeat"} else {"Repeat $repeatDays days"}
+            val repeatDaysStr = if (repeatDays == 0) {getString(R.string.no_data_str)} else {getString(R.string.repeat)+ repeatDays + getString(R.string.repeat_days_str)}
             val taskState = sp.getBoolean(defVal.alarmBooleanKey + i, false)
                 alarmList.add(Alarm(name, nextDate, nextTime, prevDate, prevTime, repeatDaysStr, taskState))
         }

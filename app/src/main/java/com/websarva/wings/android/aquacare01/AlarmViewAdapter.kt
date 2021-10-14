@@ -24,7 +24,7 @@ class AlarmViewAdapter(private var alarmListData: MutableList<Alarm>) :
 
         val alarm = alarmListData[index]
 
-        if (alarm.name != "NoData") {
+        if (alarm.name != holder.taskName.context.getString(R.string.no_data_str)) {
             holder.apply {
                 taskName.setTextColor(Color.BLUE)
                 taskDateNext.setTextColor(Color.BLACK)
@@ -77,23 +77,27 @@ class AlarmViewAdapter(private var alarmListData: MutableList<Alarm>) :
 
     }
 
-    fun deleteUpdate (index: Int) {
-        alarmListData[index].name = "NoData"
-        alarmListData[index].nextDate = "NoData"
-        alarmListData[index].nextTime = "NoData"
-        alarmListData[index].prevDate = "NoData"
-        alarmListData[index].prevTime = "NoData"
-        alarmListData[index].repeat = "NoRepeat"
-        alarmListData[index].taskState = false
-        notifyItemChanged(index)
+    fun deleteUpdate (index: Int, noData: String) {
+        alarmListData[index].apply {
+            name = noData
+            nextDate = noData
+            nextTime = noData
+            prevDate = noData
+            prevTime = noData
+            repeat = noData
+            taskState = false
+            notifyItemChanged(index)
+        }
     }
 
     fun stateUpdate (updateDate:UpdateDate) {
-        alarmListData[updateDate.index].nextDate = updateDate.nextDateStr
-        alarmListData[updateDate.index].nextTime = updateDate.nextTimeStr
-        alarmListData[updateDate.index].prevDate = updateDate.prevDateStr
-        alarmListData[updateDate.index].prevTime = updateDate.prevTimeStr
-        alarmListData[updateDate.index].taskState = true
+        alarmListData[updateDate.index].apply {
+            nextDate = updateDate.nextDateStr
+            nextTime = updateDate.nextTimeStr
+            prevDate = updateDate.prevDateStr
+            prevTime = updateDate.prevTimeStr
+            taskState = true
+        }
         notifyItemChanged(updateDate.index)
     }
 

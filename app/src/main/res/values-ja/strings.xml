@@ -14,7 +14,7 @@
     <!-- NotificationFragment-->
     <string name="alarm_list">アラームリスト</string>
     <string name="alarm_start">アラームが設定されました</string>
-    <string name="no_data_str">NoData</string>
+    <string name="no_data_str">---</string>
 
     <!-- notification -->
     <string name="notification_title">タスクがあります</string>

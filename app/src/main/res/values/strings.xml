@@ -13,7 +13,7 @@
     <!-- NotificationFragment-->
     <string name="alarm_list">Alarm list</string>
     <string name="alarm_start">Alarm has been set</string>
-    <string name="no_data_str">NoData</string>
+    <string name="no_data_str">---</string>
 
     <!-- notification -->
     <string name="notification_title">Remaining task</string>
