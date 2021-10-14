@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">フィッシュケア</string>
+    <string name="home">ホーム</string>
+    <string name="record">記録</string>
+    <string name="notification">通知</string>
+
+    <!-- HomeFragment-->
+    <string name="display_image">画像表示名称</string>
+    <string name="home_alarm_button">アラームを追加</string>
+    <string name="home_record_button">写真記録を追加</string>
+    <string name="record_number_limit">写真枚数制限です</string>
+
+    <!-- NotificationFragment-->
+    <string name="alarm_list">アラームリスト</string>
+    <string name="alarm_start">アラームが設定されました</string>
+    <string name="no_data_str">NoData</string>
+
+    <!-- notification -->
+    <string name="notification_title">タスクがあります</string>
+    <string name="notification_message">未完了のタスク</string>
+
+    <!-- AddTaskActivity -->
+    <string name="add_task_title">アラームを追加</string>
+    <string name="input_name">アラームの名前</string>
+    <string name="change_water">例) 水換え</string>
+<!--    ここまで編集ずみ-->
+    <string name="input_date">日付</string>
+    <string name="def_format_date">yyyy / MM / dd</string>
+    <string name="input_time">時間</string>
+    <string name="def_format_time">HH : mm</string>
+    <string name="repeat">繰り返し</string>
+    <string name="repeat_period">例) 7</string>
+    <string name="repeat_days_str">日</string>
+    <string name="save">保存</string>
+    <string name="character_limit">文字数制限です</string>
+    <string name="repeat_period_limit">繰り返し日数は365以下にしてください</string>
+    <string name="request_code_limit">アラーム数制限です。他のアラームを削除してください</string>
+    <string name="pick_future_msg">未来の時間を選択してください</string>
+    <!-- notificationRow -->
+    <string name="task_state_Icon">タスク状態アイコン</string>
+    <string name="default_str">デフォルト</string>
+    <string name="next">次回</string>
+    <string name="time">時間:</string>
+    <string name="date">日付:</string>
+    <string name="def_time">XX:XX</string>
+    <string name="def_date">MM/dd</string>
+    <string name="prev">前回</string>
+    <string name="no_repeat">繰り返しなし</string>
+    <string name="delete">削除</string>
+
+    <!-- RecordFragment -->
+    <string name="record_date"><u>yyyy/MM/dd</u></string>
+    <string name="photo_list">写真記録リスト</string>
+    <string name="record_image">記録画像</string>
+</resources>
