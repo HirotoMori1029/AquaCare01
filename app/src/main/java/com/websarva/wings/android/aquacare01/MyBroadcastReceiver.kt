@@ -1,6 +1,5 @@
 package com.websarva.wings.android.aquacare01
 
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -75,23 +74,9 @@ class MyBroadcastReceiver : BroadcastReceiver() {
                     calendar.add(Calendar.DATE, rpDays)
                 }
             }
-
             sp.edit().putLong(defVal.alarmNextLongKey + almID, calendar.time.time).apply()
-            val almIntent = Intent(context, MyBroadcastReceiver::class.java).apply {
-                action = "com.websarva.wings.android.aquacare01.NOTIFY_ALARM"
-                putExtra("RequestCode", almID)
-                putExtra("TaskName", alarmTaskName)
-            }
-            val pIntent = PendingIntent.getBroadcast(
-                context,
-                almID,
-                almIntent,
-                PendingIntent.FLAG_IMMUTABLE
-            )
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pIntent)
+            AlarmController().setAlarm(context, almID, calendar.timeInMillis)
             Log.d("MyBroadcastReceiver", "Alarm has been set as alarmID$almID")
         }
-
     }
 }

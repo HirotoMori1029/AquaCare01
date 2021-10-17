@@ -78,6 +78,7 @@ class NotificationFragment : Fragment() {
     //    alarmListを生成する関数
     private fun createAlarmList(sp: SharedPreferences) :MutableList<Alarm> {
 
+        val cCal = Calendar.getInstance()
         for (i in 0..defVal.nfMaxNum) {
             val name = sp.getString(defVal.alarmTaskNameKey + i, getString(R.string.no_data_str))
             val lNextDate = sp.getLong(defVal.alarmNextLongKey + i, 0)
@@ -85,9 +86,12 @@ class NotificationFragment : Fragment() {
             val nextTime = getStrFromDate(lNextDate, timeSDF)
             val lPrevDate = sp.getLong(defVal.alarmPrevLongKey + i, 0)
             val prevDate = getStrFromDate(lPrevDate, dateSDF)
-            val prevTime = getStrFromDate(lPrevDate,timeSDF)
+            val prevTime = getStrFromDate(lPrevDate, timeSDF)
             val repeatDays = sp.getInt(defVal.alarmRepeatDaysKey + i, 0)
-            val repeatDaysStr = if (repeatDays == 0) {getString(R.string.no_data_str)} else {getString(R.string.repeat)+ repeatDays + getString(R.string.repeat_days_str)}
+            val repeatDaysStr = if (repeatDays == 0) {getString(R.string.no_data_str)} else {getString(R.string.repeat) + repeatDays + getString(R.string.repeat_days_str)}
+            if (lNextDate <= cCal.time.time) {
+                sp.edit().putBoolean(defVal.alarmBooleanKey + i, false).apply()
+            }
             val taskState = sp.getBoolean(defVal.alarmBooleanKey + i, false)
                 alarmList.add(Alarm(name, nextDate, nextTime, prevDate, prevTime, repeatDaysStr, taskState))
         }
