@@ -7,7 +7,7 @@
     <!-- HomeFragment-->
     <string name="display_image">Display Name</string>
     <string name="home_alarm_button">ADD ALARM</string>
-    <string name="home_record_button">ADD RECORD</string>
+    <string name="home_record_button">ADD PHOTO</string>
     <string name="record_number_limit">Limit on number of photos</string>
 
     <!-- NotificationFragment-->
@@ -35,6 +35,7 @@
     <string name="repeat_period_limit">Repeat period must be 365 or less</string>
     <string name="request_code_limit">Limit on alarm number. Delete another alarm</string>
     <string name="pick_future_msg">Pick a date in the future</string>
+
     <!-- notificationRow -->
     <string name="task_state_Icon">taskStateIcon</string>
     <string name="default_str">default</string>

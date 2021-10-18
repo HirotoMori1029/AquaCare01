@@ -51,6 +51,6 @@
 
     <!-- RecordFragment -->
     <string name="record_date"><u>yyyy/MM/dd</u></string>
-    <string name="photo_list">写真記録リスト</string>
+    <string name="photo_list">写真記録</string>
     <string name="record_image">記録画像</string>
 </resources>

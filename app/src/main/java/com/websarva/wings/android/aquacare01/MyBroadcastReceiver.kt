@@ -28,6 +28,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
             setNotification(context, sharedPref, alarmID,pendingIntent)
             //タスク状態を保存
             sharedPref.edit().putBoolean(defVal.alarmBooleanKey + alarmID, false).apply()
+            Log.d("MyBroadcastReceiver", "made notification and task state has been changed")
 
         } else if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             //アラームの再設定を行う
@@ -38,6 +39,7 @@ class MyBroadcastReceiver : BroadcastReceiver() {
 
         }
     }
+
     private fun setNotification (context: Context, sp: SharedPreferences, alarmID: Int, pIntent: PendingIntent) {
         //Notificationに関する記述
         val channelId = "default"
